@@ -1,0 +1,44 @@
+extends layout
+
+block content
+
+  .row.justify-content-center
+
+    .col-md-5
+
+      .card.shadow
+
+        .card-body
+
+          h2.mb-4 Registro
+
+          form(method='POST')
+
+            .mb-3
+              input.form-control(
+                type='text'
+                name='username'
+                placeholder='Usuario'
+                required
+              )
+
+            .mb-3
+              input.form-control(
+                type='email'
+                name='email'
+                placeholder='Email'
+                required
+              )
+
+            .mb-3
+              input.form-control(
+                type='password'
+                name='password'
+                placeholder='Contraseña'
+                required
+              )
+
+            button.btn.btn-success.w-100(
+              type='submit'
+            )
+              | Registrarse

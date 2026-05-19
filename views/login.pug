@@ -1,0 +1,43 @@
+extends layout
+
+block content
+
+  .row.justify-content-center
+
+    .col-md-5
+
+      .card.shadow
+
+        .card-body
+
+          h2.mb-4 Login
+
+          form(method='POST', action='/auth/login')
+
+            .mb-3
+              input.form-control(
+                type='text'
+                name='username'
+                placeholder='Usuario'
+              )
+
+            .mb-3
+              input.form-control(
+                type='email'
+                name='email'
+                placeholder='Email'
+                required
+              )
+
+            .mb-3
+              input.form-control(
+                type='password'
+                name='password'
+                placeholder='Contraseña'
+                required
+              )
+
+            button.btn.btn-primary.w-100(
+              type='submit'
+            )
+              | Entrar
