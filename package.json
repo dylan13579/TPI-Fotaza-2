@@ -1,0 +1,31 @@
+{
+  "name": "tpi-fotaza-2",
+  "version": "1.0.0",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js",
+    "dev": "nodemon app.js",
+    "db:init": "cmd /c \"\"C:\\Program Files\\MySQL\\MySQL Server 8.0\\bin\\mysql.exe\" -u root -p < sql\\init.sql\""
+
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dylan13579/TPI-Fotaza-2.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/dylan13579/TPI-Fotaza-2/issues"
+  },
+  "homepage": "https://github.com/dylan13579/TPI-Fotaza-2#readme",
+  "description": "",
+  "dependencies": {
+    "bcrypt": "^6.0.0",
+    "dotenv": "^17.4.2",
+    "express": "^5.2.1",
+    "express-session": "^1.19.0",
+    "mysql2": "^3.22.3",
+    "pug": "^3.0.4"
+  }
+}
