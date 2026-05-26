@@ -1,3 +1,5 @@
+const db = require('../config/db');
+
 async function crear(usuario) {
 
     const sql = `
@@ -10,8 +12,8 @@ async function crear(usuario) {
         usuario.nombre,
         usuario.email,
         usuario.password,
-        1,           // activo por defecto
-        'usuario'    // rol por defecto
+        1,           
+        'usuario'    
     ]);
 }
 

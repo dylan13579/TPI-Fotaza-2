@@ -1,0 +1,56 @@
+extends layout
+
+block content
+  .row.justify-content-center
+    .col-md-8
+      .card.shadow
+        .card-body
+          h2.mb-4 Crear publicación
+
+          form(method='POST' action='/publicaciones/crear')
+            
+            .mb-3
+              input.form-control(
+                type='text'
+                name='titulo'
+                placeholder='Título'
+                required
+              )
+
+            .mb-3
+              textarea.form-control(
+                name='descripcion'
+                placeholder='Descripción'
+              )
+
+            .mb-3
+              label.form-label Subir imagen
+              input.form-control(
+                type='file'
+                id='fileInput'
+                accept='image/*'
+              )
+
+            // Campo oculto donde se guarda el Base64
+            input(
+              type='hidden'
+              name='imagen'
+              id='imagenBase64'
+            )
+
+            button.btn.btn-success(type='submit')
+              | Publicar
+
+  script.
+    document.getElementById('fileInput').addEventListener('change', function(e) {
+      const file = e.target.files[0];
+      const reader = new FileReader();
+
+      reader.onloadend = function() {
+        document.getElementById('imagenBase64').value = reader.result;
+      };
+
+      if (file) {
+        reader.readAsDataURL(file);
+      }
+    });

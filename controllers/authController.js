@@ -1,40 +1,59 @@
 const bcrypt = require('bcrypt');
+
 const usuarioModel = require('../models/usuarioModel');
 
 function loginView(req, res) {
     res.render('login');
 }
 
-async function login(req, res) {
+function registerView(req, res) {
+    res.render('register');
+}
+
+async function register(req, res) {
 
     try {
 
         const { username, email, password } = req.body;
 
-        let usuario = await usuarioModel.buscarPorEmail(email);
+        const hash = await bcrypt.hash(password, 10);
 
-        // 🟢 SI NO EXISTE → CREAR USUARIO
+        await usuarioModel.crear({
+            nombre: username,
+            email,
+            password: hash
+        });
+
+        res.redirect('/auth/login');
+
+    } catch (error) {
+
+        console.log(error);
+        res.send('Error registro');
+    }
+}
+
+async function login(req, res) {
+
+    try {
+
+        const { email, password } = req.body;
+
+        const usuario = await usuarioModel.buscarPorEmail(email);
+
         if (!usuario) {
-
-            const hash = await bcrypt.hash(password, 10);
-
-            await usuarioModel.crear({
-                nombre: username || 'Usuario',
-                email,
-                password: hash
-            });
-
-            usuario = await usuarioModel.buscarPorEmail(email);
+            return res.send('Usuario no encontrado o inactivo');
         }
 
-        // 🔐 VALIDAR PASSWORD
-        const valido = await bcrypt.compare(password, usuario.password);
+        const valido = await bcrypt.compare(
+            password,
+            usuario.password
+        );
 
         if (!valido) {
             return res.send('Contraseña incorrecta');
         }
 
-        // 🟢 GUARDAR SESIÓN
         req.session.usuario = usuario;
 
         res.redirect('/publicaciones');
@@ -42,17 +61,21 @@ async function login(req, res) {
     } catch (error) {
 
         console.log(error);
-        res.send('Error');
+        res.send('Error login');
     }
 }
 
 function logout(req, res) {
+
     req.session.destroy();
+
     res.redirect('/auth/login');
 }
 
 module.exports = {
     loginView,
+    registerView,
+    register,
     login,
     logout
 };

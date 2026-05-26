@@ -34,7 +34,11 @@ app.use((req, res, next) => {
     next();
 });
 
+app.use('/', require('./routes/index'));
+
 app.use('/auth', require('./routes/authRoutes'));
+
+app.use('/publicaciones', require('./routes/publicacionRoutes'));
 
 app.listen(process.env.PORT, () => {
 

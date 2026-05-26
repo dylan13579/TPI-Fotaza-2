@@ -4,7 +4,7 @@ block content
 
   .row.justify-content-center
 
-    .col-md-5
+    .col-md-4
 
       .card.shadow
 
@@ -12,14 +12,7 @@ block content
 
           h2.mb-4 Login
 
-          form(method='POST', action='/auth/login')
-
-            .mb-3
-              input.form-control(
-                type='text'
-                name='username'
-                placeholder='Usuario'
-              )
+          form(method='POST')
 
             .mb-3
               input.form-control(
@@ -40,4 +33,4 @@ block content
             button.btn.btn-primary.w-100(
               type='submit'
             )
-              | Entrar
+              | Ingresar

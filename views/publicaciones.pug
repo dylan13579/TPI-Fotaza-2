@@ -1,0 +1,28 @@
+extends layout
+
+block content
+
+  h1.mb-4 Publicaciones
+
+  .row
+
+    each p in publicaciones
+
+      .col-md-4.mb-4
+
+        .card.shadow-sm.h-100
+
+          if p.imagen
+            img.card-img-top(
+              src=p.imagen
+              style='height:250px; object-fit:cover;'
+            )
+
+          .card-body.d-flex.flex-column
+
+            h5.card-title= p.titulo
+
+            p.card-text.flex-grow-1= p.descripcion
+
+            small.text-muted
+              | Autor: #{p.nombre}
