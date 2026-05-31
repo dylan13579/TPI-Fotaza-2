@@ -1,0 +1,92 @@
+extends layout
+
+block content
+
+  .card.shadow.mb-4
+
+    if publicacion.imagen
+      img.card-img-top(
+        src=publicacion.imagen
+        style='max-height:500px; object-fit:cover;'
+      )
+
+    .card-body
+      h1= publicacion.titulo
+      p= publicacion.descripcion
+
+      small.text-muted
+        | Autor: #{publicacion.username}
+
+  h3.mb-3 Comentarios
+
+  each c in comentarios
+    .card.mb-2
+      .card-body
+
+        strong= c.username
+        p.mb-0= c.texto
+
+        if usuario && usuario.id === c.id_usuario
+          button.btn.btn-danger.btn-sm(
+            onclick=`eliminarComentario(${c.id}, this)`
+            style='margin-top:10px;'
+          ) Eliminar
+
+  if usuario
+    .card.mt-4
+      .card-body
+
+        form(
+          action='/comentarios/crear'
+          method='POST'
+        )
+
+          input(
+            type='hidden'
+            name='id_publicacion'
+            value=publicacion.id
+          )
+
+          .mb-3
+            textarea.form-control(
+              name='contenido'
+              placeholder='Escribí un comentario'
+              required
+            )
+
+          button.btn.btn-primary(type='submit')
+            | Comentar
+
+
+  a.btn.btn-primary.rounded-circle(
+    href='/'
+    style='position:fixed; bottom:20px; right:20px; width:50px; height:50px; display:flex; align-items:center; justify-content:center;'
+  )
+    i.bi.bi-arrow-left
+
+  script.
+    async function eliminarComentario(id, btn) {
+      if (!confirm('¿Eliminar comentario?')) return;
+
+      try {
+        const res = await fetch(`/comentarios/eliminar/${id}`, {
+          method: 'POST',
+          credentials: 'same-origin'
+        });
+
+        const data = await res.json();
+
+        if (data.ok) {
+          const card = btn.closest('.card');
+          card.style.transition = '0.3s';
+          card.style.opacity = '0';
+          setTimeout(() => card.remove(), 300);
+        } else {
+          alert('Error al eliminar');
+        }
+
+      } catch (error) {
+        console.error(error);
+        alert('Error de conexión');
+      }
+    }

@@ -36,9 +36,16 @@ app.use((req, res, next) => {
 
 app.use('/', require('./routes/index'));
 
+app.get('/', (req, res) => {
+    res.redirect('/auth/login');
+});
+
 app.use('/auth', require('./routes/authRoutes'));
 
 app.use('/publicaciones', require('./routes/publicacionRoutes'));
+
+app.use('/comentarios', require('./routes/comentarioRoutes')
+);
 
 app.listen(process.env.PORT, () => {
 

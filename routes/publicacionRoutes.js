@@ -23,4 +23,9 @@ router.post(
     publicacionController.crear
 );
 
+router.get(
+    '/:id',
+    publicacionController.detalle
+);
+
 module.exports = router;

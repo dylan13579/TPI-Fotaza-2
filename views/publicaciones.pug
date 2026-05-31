@@ -2,6 +2,7 @@ extends layout
 
 block content
 
+
   h1.mb-4 Publicaciones
 
   .row
@@ -14,8 +15,8 @@ block content
 
           if p.imagen
             img.card-img-top(
-              src=p.imagen
-              style='height:250px; object-fit:cover;'
+            src=p.imagen
+            style='width:%; height:250px; object-fit:cover;'
             )
 
           .card-body.d-flex.flex-column
@@ -26,3 +27,8 @@ block content
 
             small.text-muted
               | Autor: #{p.nombre}
+              br
+              a.btn.btn-primary.mt-2(
+                href=`/publicaciones/${p.id}`
+                )
+                | Ver publicación

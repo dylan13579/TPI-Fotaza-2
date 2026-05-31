@@ -58,7 +58,24 @@ async function obtenerTodas() {
     return rows;
 }
 
+async function obtenerPorId(id) {
+
+    const sql = `
+        SELECT p.*, u.nombre AS username
+        FROM publicacion p
+        INNER JOIN usuario u
+        ON p.id_usuario = u.id
+        WHERE p.id = ?
+    `;
+
+    const [rows] = await db.query(sql, [id]);
+
+    return rows[0];
+}
+
 module.exports = {
     crear,
-    obtenerTodas
+    obtenerTodas,
+    obtenerPorId
 };
+

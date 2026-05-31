@@ -1,5 +1,7 @@
 const publicacionModel = require('../models/publicacionModel');
 
+const comentarioModel = require('../models/comentarioModel');
+
 async function listar(req, res) {
 
     const publicaciones =
@@ -42,8 +44,38 @@ async function crear(req, res) {
     }
 }
 
+
+async function detalle(req, res) {
+
+    try {
+
+        const id = req.params.id;
+
+        const publicacion =
+            await publicacionModel.obtenerPorId(id);
+
+        const comentarios =
+            await comentarioModel.obtenerPorPublicacion(id);
+
+        res.render(
+            'detalle-publicacion',
+            {
+                publicacion,
+                comentarios,
+                usuario: req.session.usuario
+            }
+        );
+
+    } catch (error) {
+
+        console.log(error);
+        res.send('Error detalle');
+    }
+}
+
 module.exports = {
     listar,
     crearView,
-    crear
+    crear,
+    detalle
 };
