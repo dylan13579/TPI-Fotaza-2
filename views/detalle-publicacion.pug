@@ -17,6 +17,61 @@ block content
       small.text-muted
         | Autor: #{publicacion.username}
 
+      // Valoraciones
+
+            // Valoraciones
+
+      hr
+
+      h5 Valoración
+
+      - const promedio = estadisticas && estadisticas.promedio ? parseFloat(estadisticas.promedio) : 0
+      - const promedioRedondeado = Math.round(promedio)
+
+      p
+        strong Promedio:
+        |  #{promedio.toFixed(1)}
+
+      .estrellas.mb-2
+        each i in [1,2,3,4,5]
+          if i <= promedioRedondeado
+            span.text-warning(style='font-size:26px;') ★
+          else
+            span.text-secondary(style='font-size:26px;') ☆
+
+      p
+        strong Cantidad votos:
+        |  #{estadisticas && estadisticas.cantidad ? estadisticas.cantidad : 0}
+
+      // ✅ FORM CORRECTO (UNA SOLA VEZ Y BIEN INDENTADO)
+      if usuario && !esAutor
+        form(action='/valoraciones/votar' method='POST')
+
+          input(
+            type='hidden'
+            name='id_publicacion'
+            value=publicacion.id
+          )
+
+          .mb-3
+            label.form-label Puntuación
+
+            .estrellas-hover
+              each i in [5,4,3,2,1]
+                input(
+                  type='radio'
+                  id=`star${i}`
+                  name='puntuacion'
+                  value=i
+                  required
+                )
+                label(for=`star${i}`) ★
+
+          button.btn.btn-primary.mt-2(type='submit')
+            | Votar
+
+  // Comentarios
+
   h3.mb-3 Comentarios
 
   each c in comentarios
@@ -57,6 +112,7 @@ block content
           button.btn.btn-primary(type='submit')
             | Comentar
 
+  // Botón volver
 
   a.btn.btn-primary.rounded-circle(
     href='/'

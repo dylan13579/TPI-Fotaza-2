@@ -2,6 +2,8 @@ const publicacionModel = require('../models/publicacionModel');
 
 const comentarioModel = require('../models/comentarioModel');
 
+const valoracionModel = require('../models/valoracionModel');
+
 async function listar(req, res) {
 
     const publicaciones =
@@ -57,12 +59,19 @@ async function detalle(req, res) {
         const comentarios =
             await comentarioModel.obtenerPorPublicacion(id);
 
+        const estadisticas =
+            await valoracionModel.obtenerEstadisticas(id);
+        
+        const esAutor = publicacion.id_usuario === req.session.usuario.id;
+
         res.render(
             'detalle-publicacion',
             {
                 publicacion,
                 comentarios,
-                usuario: req.session.usuario
+                estadisticas,
+                usuario: req.session.usuario,
+                esAutor
             }
         );
 
