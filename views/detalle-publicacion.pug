@@ -19,8 +19,6 @@ block content
 
       // Valoraciones
 
-            // Valoraciones
-
       hr
 
       h5 Valoración
@@ -43,7 +41,6 @@ block content
         strong Cantidad votos:
         |  #{estadisticas && estadisticas.cantidad ? estadisticas.cantidad : 0}
 
-      // ✅ FORM CORRECTO (UNA SOLA VEZ Y BIEN INDENTADO)
       if usuario && !esAutor
         form(action='/valoraciones/votar' method='POST')
 
