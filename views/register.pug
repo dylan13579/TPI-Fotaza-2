@@ -3,42 +3,91 @@ extends layout
 block content
 
   .row.justify-content-center
-
     .col-md-5
-
       .card.shadow
-
         .card-body
 
           h2.mb-4 Registro
 
-          form(method='POST')
+          if errores && errores.general
+            .alert.alert-danger= errores.general
+
+          form(method='POST' novalidate)
 
             .mb-3
               input.form-control(
+                class=errores && errores.nombre ? 'is-invalid' : ''
+                type='text'
+                name='nombre'
+                placeholder='Nombre'
+                value=datos ? datos.nombre : ''
+              )
+              if errores && errores.nombre
+                .invalid-feedback= errores.nombre
+
+            .mb-3
+              input.form-control(
+                class=errores && errores.apellido ? 'is-invalid' : ''
+                type='text'
+                name='apellido'
+                placeholder='Apellido'
+                value=datos ? datos.apellido : ''
+              )
+              if errores && errores.apellido
+                .invalid-feedback= errores.apellido
+
+            .mb-3
+              input.form-control(
+                class=errores && errores.username ? 'is-invalid' : ''
                 type='text'
                 name='username'
                 placeholder='Usuario'
-                required
+                value=datos ? datos.username : ''
               )
+              if errores && errores.username
+                .invalid-feedback= errores.username
 
             .mb-3
               input.form-control(
+                class=errores && errores.email ? 'is-invalid' : ''
                 type='email'
                 name='email'
                 placeholder='Email'
-                required
+                value=datos ? datos.email : ''
               )
+              if errores && errores.email
+                .invalid-feedback= errores.email
 
             .mb-3
               input.form-control(
+                class=errores && errores.password ? 'is-invalid' : ''
                 type='password'
                 name='password'
                 placeholder='Contraseña'
-                required
               )
+              if errores && errores.password
+                .invalid-feedback= errores.password
 
-            button.btn.btn-success.w-100(
-              type='submit'
-            )
+            .mb-3
+              select.form-control(
+                class=errores && errores.sexo ? 'is-invalid' : ''
+                name='sexo'
+              )
+                option(value='') Selecciona sexo
+                option(value='M' selected=datos && datos.sexo === 'M') Masculino
+                option(value='F' selected=datos && datos.sexo === 'F') Femenino
+              if errores && errores.sexo
+                .invalid-feedback= errores.sexo
+
+            .mb-3
+              input.form-control(
+                class=errores && errores.fecha_nacimiento ? 'is-invalid' : ''
+                type='date'
+                name='fecha_nacimiento'
+                value=datos ? datos.fecha_nacimiento : ''
+              )
+              if errores && errores.fecha_nacimiento
+                .invalid-feedback= errores.fecha_nacimiento
+
+            button.btn.btn-success.w-100(type='submit')
               | Registrarse
