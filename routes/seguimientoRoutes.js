@@ -1,7 +1,5 @@
 const router = require('express').Router();
 
-console.log('RUTAS DE SEGUIMIENTO CARGADAS');
-
 const authMiddleware = require('../middlewares/authMiddleware');
 const seguimientoController = require('../controllers/seguimientoController');
 
