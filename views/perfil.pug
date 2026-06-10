@@ -1,0 +1,16 @@
+h1 Perfil
+
+p Seguidores: #{seguidores}
+p Seguidos: #{seguidos}
+
+h2 Publicaciones
+
+.row
+  each p in publicaciones
+    .col-md-4
+      .card.mb-3
+        if p.imagen
+          img.card-img-top(src=p.imagen)
+        .card-body
+          h5= p.titulo
+          p= p.descripcion

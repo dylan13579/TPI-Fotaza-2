@@ -34,7 +34,6 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use('/', require('./routes/index'));
 
 app.get('/', (req, res) => {
     res.redirect('/auth/login');
@@ -49,6 +48,8 @@ app.use('/publicaciones', require('./routes/publicacionRoutes'));
 app.use('/comentarios', require('./routes/comentarioRoutes'));
 
 app.use('/valoraciones', require('./routes/valoracionRoutes'));
+
+app.use('/seguimientos', require('./routes/seguimientoRoutes'));
 
 app.listen(process.env.PORT, () => {
 

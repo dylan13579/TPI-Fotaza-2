@@ -9,6 +9,8 @@ router.get('/buscar', publicacionController.buscar);
 router.get('/crear', authMiddleware, publicacionController.crearView);
 router.post('/crear', authMiddleware, publicacionController.crear);
 
+router.get('/perfil/:id',publicacionController.perfil);
+
 router.get('/:id', publicacionController.detalle);
 
 module.exports = router;

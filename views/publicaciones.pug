@@ -46,6 +46,15 @@ block content
                 small.text-muted
                   | Autor: #{p.username}
 
+                if usuario && usuario.id !== p.id_usuario
+                  a.btn.btn-success.btn-sm.mt-2(
+                    href=`/seguimientos/seguir/${p.id_usuario}`
+                  ) Seguir
+
+                  a.btn.btn-danger.btn-sm.mt-2(
+                    href=`/seguimientos/dejar/${p.id_usuario}`
+                  ) Dejar de seguir
+
                 a.btn.btn-primary.mt-2(
                   href=`/publicaciones/${p.id}`
                 ) Ver publicación

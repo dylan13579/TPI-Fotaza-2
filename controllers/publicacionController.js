@@ -1,6 +1,7 @@
 const publicacionModel = require('../models/publicacionModel');
 const comentarioModel = require('../models/comentarioModel');
 const valoracionModel = require('../models/valoracionModel');
+const seguimientoModel = require('../models/seguimientoModel');
 
 async function listar(req, res) {
 
@@ -95,10 +96,39 @@ async function buscar(req, res) {
     }
 }
 
+async function perfil(req, res) {
+
+    try {
+
+        const idUsuario = req.params.id;
+
+        const publicaciones =
+            await publicacionModel.obtenerPorUsuario(idUsuario);
+
+        const seguidores =
+            await seguimientoModel.cantidadSeguidores(idUsuario);
+
+        const seguidos =
+            await seguimientoModel.cantidadSeguidos(idUsuario);
+
+        res.render('perfil', {
+            publicaciones,
+            seguidores,
+            seguidos
+        });
+
+    } catch (error) {
+
+        console.log(error);
+        res.send('Error en perfil');
+    }
+}
+
 module.exports = {
     listar,
     crearView,
     crear,
     detalle,
-    buscar
+    buscar,
+    perfil
 };
