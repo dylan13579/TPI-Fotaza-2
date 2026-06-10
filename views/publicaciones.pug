@@ -2,33 +2,87 @@ extends layout
 
 block content
 
-
-  h1.mb-4 Publicaciones
-
   .row
 
-    each p in publicaciones
+    .col-md-3
+      .bg-dark.text-white.p-3.rounded.shadow-sm.mb-4
 
-      .col-md-4.mb-4
+        input.form-control.mb-2(
+          type='search'
+          placeholder='Buscar...'
+          oninput='buscarPublicaciones(this.value)'
+        )
 
-        .card.shadow-sm.h-100
+        hr.text-white
 
-          if p.imagen
-            img.card-img-top(
-            src=p.imagen
-            style='width:%; height:250px; object-fit:cover;'
-            )
+        if usuario
+          a.btn.btn-success.w-100.mb-2(href='/publicaciones/crear') Crear publicación
+          a.btn.btn-danger.w-100(href='/auth/logout') Cerrar sesión
+        else
+          a.btn.btn-outline-light.w-100.mb-2(href='/auth/login') Login
+          a.btn.btn-primary.w-100(href='/auth/register') Registro
 
-          .card-body.d-flex.flex-column
 
-            h5.card-title= p.titulo
+    .col-md-9
 
-            p.card-text.flex-grow-1= p.descripcion
+      .row#contenedor-publicaciones
 
-            small.text-muted
-              | Autor: #{p.nombre}
-              br
-              a.btn.btn-primary.mt-2(
-                href=`/publicaciones/${p.id}`
+        each p in publicaciones
+
+          .col-md-4.mb-4
+            .card.shadow-sm.h-100
+
+              if p.imagen
+                img.card-img-top(
+                  src=p.imagen
+                  style='height:250px; object-fit:cover;'
                 )
-                | Ver publicación
+
+              .card-body.d-flex.flex-column
+
+                h5.card-title= p.titulo
+                p.card-text.flex-grow-1= p.descripcion
+
+                small.text-muted
+                  | Autor: #{p.username}
+
+                a.btn.btn-primary.mt-2(
+                  href=`/publicaciones/${p.id}`
+                ) Ver publicación
+
+
+  script.
+    let timeout;
+
+    function buscarPublicaciones(texto) {
+
+      clearTimeout(timeout);
+
+      timeout = setTimeout(async () => {
+
+        const contenedor = document.getElementById('contenedor-publicaciones');
+
+        if (!texto) {
+          location.reload();
+          return;
+        }
+
+        try {
+          const res = await fetch(`/publicaciones/buscar?q=${texto}`);
+          const html = await res.text();
+
+          const temp = document.createElement('div');
+          temp.innerHTML = html;
+
+          const nuevas = temp.querySelector('#contenedor-publicaciones');
+
+          if (nuevas) {
+            contenedor.innerHTML = nuevas.innerHTML;
+          }
+
+        } catch (error) {
+          console.error(error);
+        }
+
+      }, 300);
+    }

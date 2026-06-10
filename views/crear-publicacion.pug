@@ -41,6 +41,12 @@ block content
             button.btn.btn-success(type='submit')
               | Publicar
 
+  a.btn.btn-primary.rounded-circle(
+    href='/'
+    style='position:fixed; bottom:20px; right:20px; width:50px; height:50px; display:flex; align-items:center; justify-content:center;'
+  )
+    i.bi.bi-arrow-left
+
   script.
     document.getElementById('fileInput').addEventListener('change', function(e) {
       const file = e.target.files[0];

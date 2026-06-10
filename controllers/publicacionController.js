@@ -1,7 +1,5 @@
 const publicacionModel = require('../models/publicacionModel');
-
 const comentarioModel = require('../models/comentarioModel');
-
 const valoracionModel = require('../models/valoracionModel');
 
 async function listar(req, res) {
@@ -10,12 +8,12 @@ async function listar(req, res) {
         await publicacionModel.obtenerTodas();
 
     res.render('publicaciones', {
-        publicaciones
+        publicaciones,
+        usuario: req.session.usuario
     });
 }
 
 function crearView(req, res) {
-
     res.render('crear-publicacion');
 }
 
@@ -39,13 +37,10 @@ async function crear(req, res) {
         res.redirect('/publicaciones');
 
     } catch (error) {
-
         console.log(error);
-
         res.send('Error publicación');
     }
 }
-
 
 async function detalle(req, res) {
 
@@ -61,24 +56,42 @@ async function detalle(req, res) {
 
         const estadisticas =
             await valoracionModel.obtenerEstadisticas(id);
-        
-        const esAutor = publicacion.id_usuario === req.session.usuario.id;
 
-        res.render(
-            'detalle-publicacion',
-            {
-                publicacion,
-                comentarios,
-                estadisticas,
-                usuario: req.session.usuario,
-                esAutor
-            }
-        );
+        const esAutor =
+            req.session.usuario &&
+            publicacion.id_usuario === req.session.usuario.id;
+
+        res.render('detalle-publicacion', {
+            publicacion,
+            comentarios,
+            estadisticas,
+            usuario: req.session.usuario,
+            esAutor
+        });
 
     } catch (error) {
-
         console.log(error);
         res.send('Error detalle');
+    }
+}
+
+async function buscar(req, res) {
+
+    try {
+
+        const texto = req.query.q || '';
+
+        const publicaciones =
+            await publicacionModel.buscar(texto);
+
+        res.render('publicaciones', {
+            publicaciones,
+            usuario: req.session.usuario
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.send('Error en búsqueda');
     }
 }
 
@@ -86,5 +99,6 @@ module.exports = {
     listar,
     crearView,
     crear,
-    detalle
+    detalle,
+    buscar
 };

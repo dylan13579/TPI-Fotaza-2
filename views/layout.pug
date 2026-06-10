@@ -14,9 +14,9 @@ html
     )
 
     link(
-      rel='stylesheet', href='/css/animacion.css'
+      rel='stylesheet'
+      href='/css/animacion.css'
     )
-
 
   body.bg-light
 
@@ -28,32 +28,12 @@ html
 
         .d-flex
 
-          if usuario
-            a.btn.btn-outline-light.me-2(
-              href='/publicaciones'
-            )
-              | Publicaciones
+          if !usuario
 
-            a.btn.btn-success.me-2(
-              href='/publicaciones/crear'
-            )
-              | Crear
-
-            a.btn.btn-danger(
-              href='/auth/logout'
-            )
-              | Logout
-
-          else
-
-            a.btn.btn-outline-light.me-2(
-              href='/auth/login'
-            )
+            a.btn.btn-outline-light.me-2(href='/auth/login')
               | Login
 
-            a.btn.btn-primary(
-              href='/auth/register'
-            )
+            a.btn.btn-primary(href='/auth/register')
               | Registro
 
     .container.mt-4
