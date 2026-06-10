@@ -51,7 +51,7 @@ app.use('/valoraciones', require('./routes/valoracionRoutes'));
 
 app.use('/seguimientos', require('./routes/seguimientoRoutes'));
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 4000;
 
 app.listen(PORT, '0.0.0.0', () => {
     console.log(`Servidor en puerto ${PORT}`);
