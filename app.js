@@ -39,7 +39,6 @@ app.get('/', (req, res) => {
     res.redirect('/auth/login');
 });
 
-app.use(express.urlencoded({ extended: true }));
 
 app.use('/auth', require('./routes/authRoutes'));
 
