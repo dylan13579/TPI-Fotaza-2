@@ -9,7 +9,7 @@
 
 **FOTAZA 2** es una aplicación web desarrollada como Trabajo Práctico Integrador de la materia **Programación Web II**.
 
-El sistema permite a los usuarios registrarse, publicar fotografías, interactuar con contenido de otros usuarios mediante comentarios, valoraciones, seguidores y notificaciones.
+El sistema permite a los usuarios registrarse, publicar fotografías, interactuar con contenido de otros usuarios mediante comentarios, valoraciones, seguidores.
 
 El objetivo del proyecto es simular una red social de imágenes con funcionalidades de comunidad y gestión de contenido.
 
