@@ -144,6 +144,30 @@ npm run db:init
 
 ---
 
+👤 Usuarios de prueba
+
+USUARIO 1
+
+Email: djofre@gmail.com
+Password: 123456789
+
+USUARIO 2
+
+Email: martinfeznandez80@gmail.com
+Password: 159753
+
+USUARIO 3
+
+Email: franco55@gmail.com
+Password: 123456789
+
+USUARIO 4
+
+Email: quevedodavid@gmail.com
+Password: 741
+
+---
+
 ## 👤 Autor
 
 Proyecto desarrollado para Programación Web II  
