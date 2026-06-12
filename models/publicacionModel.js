@@ -2,35 +2,19 @@ const db = require('../config/db');
 
 async function crear(publicacion) {
 
-    const sqlPublicacion = `
+    const sql = `
         INSERT INTO publicacion
         (id_usuario, titulo, descripcion, estado)
         VALUES (?, ?, ?, 'activa')
     `;
 
-    const [result] = await db.query(sqlPublicacion, [
+    const [result] = await db.query(sql, [
         publicacion.id_usuario,
         publicacion.titulo,
         publicacion.descripcion
     ]);
 
-    const idPublicacion = result.insertId;
-
-    if (publicacion.imagen) {
-
-        const sqlImagen = `
-            INSERT INTO imagen
-            (id_publicacion, url, licencia, marca_agua)
-            VALUES (?, ?, 'copyright', '')
-        `;
-
-        await db.query(sqlImagen, [
-            idPublicacion,
-            publicacion.imagen
-        ]);
-    }
-
-    return idPublicacion;
+    return result.insertId;
 }
 
 async function obtenerTodas() {
@@ -40,16 +24,10 @@ async function obtenerTodas() {
             p.*,
             u.username,
             u.nombre,
-            u.apellido,
-            i.url AS imagen
+            u.apellido
         FROM publicacion p
-
         INNER JOIN usuario u
             ON p.id_usuario = u.id
-
-        LEFT JOIN imagen i
-            ON i.id_publicacion = p.id
-
         ORDER BY p.fecha DESC
     `;
 
@@ -67,10 +45,8 @@ async function obtenerPorId(id) {
             u.nombre,
             u.apellido
         FROM publicacion p
-
         INNER JOIN usuario u
             ON p.id_usuario = u.id
-
         WHERE p.id = ?
     `;
 
@@ -86,16 +62,10 @@ async function buscar(texto) {
             p.*, 
             u.username,
             u.nombre,
-            u.apellido,
-            i.url AS imagen
+            u.apellido
         FROM publicacion p
-
         INNER JOIN usuario u
             ON p.id_usuario = u.id
-
-        LEFT JOIN imagen i
-            ON i.id_publicacion = p.id
-
         WHERE (
             p.titulo LIKE ? COLLATE utf8mb4_general_ci
             OR p.descripcion LIKE ? COLLATE utf8mb4_general_ci
@@ -103,7 +73,6 @@ async function buscar(texto) {
             OR u.nombre LIKE ? COLLATE utf8mb4_general_ci
             OR u.apellido LIKE ? COLLATE utf8mb4_general_ci
         )
-
         ORDER BY p.fecha DESC
     `;
 

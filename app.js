@@ -50,8 +50,7 @@ app.use('/valoraciones', require('./routes/valoracionRoutes'));
 
 app.use('/seguimientos', require('./routes/seguimientoRoutes'));
 
-const PORT = process.env.PORT || 8080;
+app.listen(process.env.PORT, () => {
 
-app.listen(PORT, () => {
-    console.log(`Servidor en puerto ${PORT}`);
+    console.log(`Servidor en http://localhost:${process.env.PORT}`);
 });
