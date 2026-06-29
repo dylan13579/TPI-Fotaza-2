@@ -1,62 +1,88 @@
 extends layout
 
 block content
-  .row.justify-content-center
-    .col-md-8
-      .card.shadow
-        .card-body
-          h2.mb-4 Crear publicación
+  .create-container
 
-          form(method='POST' action='/publicaciones/crear')
-            
-            .mb-3
-              input.form-control(
-                type='text'
-                name='titulo'
-                placeholder='Título'
-                required
-              )
+    .create-card
+      h2 Crear publicación
 
-            .mb-3
-              textarea.form-control(
-                name='descripcion'
-                placeholder='Descripción'
-              )
+      form(method='POST' action='/publicaciones/crear')
 
-            .mb-3
-              label.form-label Subir imagen
-              input.form-control(
-                type='file'
-                id='fileInput'
-                accept='image/*'
-              )
+        .input-group
+          input.form-control(
+            type='text'
+            name='titulo'
+            placeholder='¿Qué estás pensando?'
+            required
+          )
 
-            // Campo oculto donde se guarda el Base64
-            input(
-              type='hidden'
-              name='imagen'
-              id='imagenBase64'
-            )
+        .input-group
+          textarea.form-control(
+            name='descripcion'
+            placeholder='Escribí una descripción...'
+            rows='3'
+          )
 
-            button.btn.btn-success(type='submit')
-              | Publicar
+        .upload-box(id='uploadBox')
+          input(
+            type='file'
+            id='fileInput'
+            accept='image/*'
+            hidden
+          )
 
-  a.btn.btn-primary.rounded-circle(
-    href='/'
-    style='position:fixed; bottom:20px; right:20px; width:50px; height:50px; display:flex; align-items:center; justify-content:center;'
-  )
-    i.bi.bi-arrow-left
+          .upload-content
+            i.bi.bi-image
+            p Arrastrá una imagen o hacé click
+            small JPG, PNG
+
+          img#preview(style='display:none;')
+
+        input(type='hidden' name='imagen' id='imagenBase64')
+
+        button.btn-publish(type='submit')
+          | Publicar
 
   script.
-    document.getElementById('fileInput').addEventListener('change', function(e) {
+    const fileInput = document.getElementById('fileInput');
+    const uploadBox = document.getElementById('uploadBox');
+    const preview = document.getElementById('preview');
+    const base64Input = document.getElementById('imagenBase64');
+
+    uploadBox.addEventListener('click', () => fileInput.click());
+
+    uploadBox.addEventListener('dragover', e => {
+      e.preventDefault();
+      uploadBox.classList.add('drag');
+    });
+
+    uploadBox.addEventListener('dragleave', () => {
+      uploadBox.classList.remove('drag');
+    });
+
+    uploadBox.addEventListener('drop', e => {
+      e.preventDefault();
+      uploadBox.classList.remove('drag');
+      const file = e.dataTransfer.files[0];
+      handleFile(file);
+    });
+
+    fileInput.addEventListener('change', e => {
       const file = e.target.files[0];
+      handleFile(file);
+    });
+
+    function handleFile(file) {
+      if (!file) return;
+
       const reader = new FileReader();
 
       reader.onloadend = function() {
-        document.getElementById('imagenBase64').value = reader.result;
+        preview.src = reader.result;
+        preview.style.display = 'block';
+        base64Input.value = reader.result;
+        uploadBox.classList.add('has-image');
       };
 
-      if (file) {
-        reader.readAsDataURL(file);
-      }
-    });
+      reader.readAsDataURL(file);
+    }

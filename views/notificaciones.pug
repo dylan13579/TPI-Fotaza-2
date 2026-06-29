@@ -1,0 +1,41 @@
+extends layout
+
+block content
+
+  h1.mb-4 Notificaciones
+
+  if notificaciones.length == 0
+    .alert.alert-info
+      | No tenés notificaciones
+
+  else
+    each n in notificaciones
+
+      .card.mb-3(class=!n.leida ? 'border-primary' : '')
+        .card-body
+
+          p
+            if n.tipo_evento == 'seguimiento'
+              b= n.usuario_origen
+              |  comenzó a seguirte
+
+            else if n.tipo_evento == 'like'
+              b= n.usuario_origen
+              |  calificó tu publicación
+
+            else if n.tipo_evento == 'comentario'
+              b= n.usuario_origen
+              |  comentó tu publicación
+
+            else
+              | Notificación
+
+          small.text-muted= n.fecha
+
+          br
+
+          if !n.leida
+            a.btn.btn-sm.btn-primary(
+              href=`/notificaciones/leer/${n.id}`
+            )
+              | Marcar leída

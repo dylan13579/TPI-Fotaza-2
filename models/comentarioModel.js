@@ -38,7 +38,7 @@ async function eliminar(idComentario, idUsuario) {
         WHERE id = ? AND id_usuario = ?
     `;
 
-    const [result] = await db.query(sql, [idComentario, idUsuario]);
+    const result = await db.query(sql, [idComentario, idUsuario]);
 
     return result;
 }

@@ -2,15 +2,22 @@ const bcrypt = require('bcrypt');
 const usuarioModel = require('../models/usuarioModel');
 
 function loginView(req, res) {
-    res.render('login');
+    res.locals.ocultarSidebar = true;
+
+    const success = req.session.success;
+    delete req.session.success;
+
+    res.render('login', { success });
 }
 
 function registerView(req, res) {
+    res.locals.ocultarSidebar = true;
     res.render('register');
 }
 
 async function register(req, res) {
     try {
+
         const {
             nombre,
             apellido,
@@ -32,6 +39,8 @@ async function register(req, res) {
         if (!fecha_nacimiento) errores.fecha_nacimiento = 'La fecha de nacimiento es obligatoria';
 
         if (Object.keys(errores).length > 0) {
+            res.locals.ocultarSidebar = true;
+
             return res.render('register', {
                 errores,
                 datos: req.body
@@ -41,10 +50,10 @@ async function register(req, res) {
         const existente = await usuarioModel.buscarPorEmail(email);
 
         if (existente) {
-            errores.email = 'El email ya está registrado';
+            res.locals.ocultarSidebar = true;
 
             return res.render('register', {
-                errores,
+                errores: { email: 'El email ya está registrado' },
                 datos: req.body
             });
         }
@@ -52,10 +61,10 @@ async function register(req, res) {
         const usuarioExistente = await usuarioModel.buscarPorUsername(username);
 
         if (usuarioExistente) {
-            errores.username = 'El usuario ya existe';
+            res.locals.ocultarSidebar = true;
 
             return res.render('register', {
-                errores,
+                errores: { username: 'El usuario ya existe' },
                 datos: req.body
             });
         }
@@ -73,12 +82,14 @@ async function register(req, res) {
             activo: 1
         });
 
-        res.render('login', {
-            success: 'Cuenta creada correctamente'
-        });
+        req.session.success = 'Cuenta creada correctamente';
+        return res.redirect('/auth/login');
 
     } catch (error) {
         console.log(error);
+
+        res.locals.ocultarSidebar = true;
+
         res.render('register', {
             errores: {
                 general: 'Error en el servidor'
@@ -90,6 +101,7 @@ async function register(req, res) {
 
 async function login(req, res) {
     try {
+
         const { email, password } = req.body;
 
         let errores = {};
@@ -98,6 +110,8 @@ async function login(req, res) {
         if (!password) errores.password = 'La contraseña es obligatoria';
 
         if (Object.keys(errores).length > 0) {
+            res.locals.ocultarSidebar = true;
+
             return res.render('login', {
                 errores,
                 datos: req.body
@@ -107,10 +121,10 @@ async function login(req, res) {
         const usuario = await usuarioModel.buscarPorEmail(email);
 
         if (!usuario || usuario.activo === 0) {
+            res.locals.ocultarSidebar = true;
+
             return res.render('login', {
-                errores: {
-                    email: 'No se encuentra ese Usuario'
-                },
+                errores: { email: 'No se encuentra ese Usuario' },
                 datos: req.body
             });
         }
@@ -118,10 +132,10 @@ async function login(req, res) {
         const valido = await bcrypt.compare(password, usuario.password);
 
         if (!valido) {
+            res.locals.ocultarSidebar = true;
+
             return res.render('login', {
-                errores: {
-                    password: 'Contraseña incorrecta'
-                },
+                errores: { password: 'Contraseña incorrecta' },
                 datos: req.body
             });
         }
@@ -132,6 +146,9 @@ async function login(req, res) {
 
     } catch (error) {
         console.log(error);
+
+        res.locals.ocultarSidebar = true;
+
         res.render('login', {
             errores: {
                 general: 'Error en el servidor'

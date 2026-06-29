@@ -1,4 +1,5 @@
 const seguimientoModel = require('../models/seguimientoModel');
+const notificacionModel = require('../models/notificacionModel');
 
 async function seguir(req, res) {
     try {
@@ -14,6 +15,12 @@ async function seguir(req, res) {
             idSeguidor,
             idSeguido
         );
+
+        await notificacionModel.crear({
+            id_usuario: idSeguido,
+            tipo_evento: 'seguimiento',
+            id_usuario_origen: idSeguidor
+        });
 
         res.redirect('/publicaciones');
 

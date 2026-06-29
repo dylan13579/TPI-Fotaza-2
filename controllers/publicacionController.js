@@ -5,8 +5,7 @@ const seguimientoModel = require('../models/seguimientoModel');
 
 async function listar(req, res) {
 
-    const publicaciones =
-        await publicacionModel.obtenerTodas();
+    const publicaciones = await publicacionModel.obtenerTodas();
 
     res.render('publicaciones', {
         publicaciones,
@@ -22,18 +21,17 @@ async function crear(req, res) {
 
     try {
 
-        const {
-            titulo,
-            descripcion,
-            imagen
-        } = req.body;
+        const { titulo, descripcion, imagen } = req.body;
 
-        await publicacionModel.crear({
+        const id_publicacion = await publicacionModel.crear({
             id_usuario: req.session.usuario.id,
             titulo,
-            descripcion,
-            imagen
+            descripcion
         });
+
+        if (imagen && imagen.length > 100) {
+            await publicacionModel.guardarImagen(id_publicacion, imagen);
+        }
 
         res.redirect('/publicaciones');
 
@@ -49,14 +47,11 @@ async function detalle(req, res) {
 
         const id = req.params.id;
 
-        const publicacion =
-            await publicacionModel.obtenerPorId(id);
+        const publicacion = await publicacionModel.obtenerPorId(id);
 
-        const comentarios =
-            await comentarioModel.obtenerPorPublicacion(id);
+        const comentarios = await comentarioModel.obtenerPorPublicacion(id);
 
-        const estadisticas =
-            await valoracionModel.obtenerEstadisticas(id);
+        const estadisticas = await valoracionModel.obtenerEstadisticas(id);
 
         const esAutor =
             req.session.usuario &&
@@ -82,8 +77,7 @@ async function buscar(req, res) {
 
         const texto = req.query.q || '';
 
-        const publicaciones =
-            await publicacionModel.buscar(texto);
+        const publicaciones = await publicacionModel.buscar(texto);
 
         res.render('publicaciones', {
             publicaciones,
@@ -118,7 +112,6 @@ async function perfil(req, res) {
         });
 
     } catch (error) {
-
         console.log(error);
         res.send('Error en perfil');
     }

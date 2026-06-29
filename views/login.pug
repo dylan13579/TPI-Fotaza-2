@@ -3,11 +3,8 @@ extends layout
 block content
 
   .row.justify-content-center
-
     .col-md-4
-
       .card.shadow
-
         .card-body
 
           h2.mb-4 Login
@@ -43,3 +40,6 @@ block content
 
             button.btn.btn-primary.w-100(type='submit')
               | Ingresar
+
+          a.btn.btn-outline-secondary.w-100.mt-2(href='/auth/register')
+            | Crear cuenta

@@ -17,6 +17,16 @@ async function crear(publicacion) {
     return result.insertId;
 }
 
+async function guardarImagen(id_publicacion, imagen) {
+
+    const base64 = imagen.split(',')[1];
+
+    await db.query(`
+        INSERT INTO imagen (id_publicacion, url, licencia)
+        VALUES (?, ?, 'copyright')
+    `, [id_publicacion, base64]);
+}
+
 async function obtenerTodas() {
 
     const sql = `
@@ -24,15 +34,17 @@ async function obtenerTodas() {
             p.*,
             u.username,
             u.nombre,
-            u.apellido
+            u.apellido,
+            i.url AS imagen
         FROM publicacion p
         INNER JOIN usuario u
             ON p.id_usuario = u.id
+        LEFT JOIN imagen i
+            ON i.id_publicacion = p.id
         ORDER BY p.fecha DESC
     `;
 
     const [rows] = await db.query(sql);
-
     return rows;
 }
 
@@ -43,15 +55,17 @@ async function obtenerPorId(id) {
             p.*, 
             u.username,
             u.nombre,
-            u.apellido
+            u.apellido,
+            i.url AS imagen
         FROM publicacion p
         INNER JOIN usuario u
             ON p.id_usuario = u.id
+        LEFT JOIN imagen i
+            ON i.id_publicacion = p.id
         WHERE p.id = ?
     `;
 
     const [rows] = await db.query(sql, [id]);
-
     return rows[0];
 }
 
@@ -62,16 +76,19 @@ async function buscar(texto) {
             p.*, 
             u.username,
             u.nombre,
-            u.apellido
+            u.apellido,
+            i.url AS imagen
         FROM publicacion p
         INNER JOIN usuario u
             ON p.id_usuario = u.id
+        LEFT JOIN imagen i
+            ON i.id_publicacion = p.id
         WHERE (
-            p.titulo LIKE ? COLLATE utf8mb4_general_ci
-            OR p.descripcion LIKE ? COLLATE utf8mb4_general_ci
-            OR u.username LIKE ? COLLATE utf8mb4_general_ci
-            OR u.nombre LIKE ? COLLATE utf8mb4_general_ci
-            OR u.apellido LIKE ? COLLATE utf8mb4_general_ci
+            p.titulo LIKE ?
+            OR p.descripcion LIKE ?
+            OR u.username LIKE ?
+            OR u.nombre LIKE ?
+            OR u.apellido LIKE ?
         )
         ORDER BY p.fecha DESC
     `;
@@ -89,6 +106,7 @@ async function buscar(texto) {
 
 module.exports = {
     crear,
+    guardarImagen,
     obtenerTodas,
     obtenerPorId,
     buscar

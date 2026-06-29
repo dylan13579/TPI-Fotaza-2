@@ -15,16 +15,33 @@ async function votar(idPublicacion, idUsuario, puntuacion) {
 }
 
 async function obtenerEstadisticas(idPublicacion) {
-  const sql = `
-    SELECT
-      ROUND(AVG(puntuacion),2) promedio,
-      COUNT(*) cantidad
+
+  const [info] = await db.query(`
+    SELECT 
+      ROUND(AVG(puntuacion),2) AS promedio,
+      COUNT(*) AS cantidad
     FROM valoracion
     WHERE id_imagen = ?
-  `;
+  `, [idPublicacion]);
 
-  const [rows] = await db.query(sql, [idPublicacion]);
-  return rows[0];
+  const [rows] = await db.query(`
+    SELECT puntuacion, COUNT(*) AS total
+    FROM valoracion
+    WHERE id_imagen = ?
+    GROUP BY puntuacion
+  `, [idPublicacion]);
+
+  let estrellas = {5:0,4:0,3:0,2:0,1:0};
+
+  rows.forEach(r => {
+    estrellas[r.puntuacion] = r.total;
+  });
+
+  return {
+    promedio: info[0].promedio || 0,
+    cantidad: info[0].cantidad || 0,
+    estrellas
+  };
 }
 
 async function obtenerVoto(idPublicacion, idUsuario) {

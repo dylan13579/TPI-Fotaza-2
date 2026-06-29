@@ -1,0 +1,92 @@
+.create-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 40px;
+}
+
+.create-card {
+  width: 100%;
+  max-width: 500px;
+  background: #fff;
+  border-radius: 16px;
+  padding: 25px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+.input-group {
+  margin-bottom: 15px;
+}
+
+.form-control {
+  border-radius: 10px;
+}
+
+.upload-box {
+  border: 2px dashed #ccc;
+  border-radius: 14px;
+  padding: 25px;
+  text-align: center;
+  cursor: pointer;
+  transition: 0.2s;
+  position: relative;
+}
+
+.upload-box:hover {
+  border-color: #0d6efd;
+}
+
+.upload-box.drag {
+  background: #f0f8ff;
+  border-color: #0d6efd;
+}
+
+.upload-box.has-image .upload-content {
+  display: none;
+}
+
+.upload-content i {
+  font-size: 30px;
+  color: #888;
+}
+
+.upload-content p {
+  margin: 10px 0 5px;
+  font-weight: 500;
+}
+
+#preview {
+  width: 100%;
+  border-radius: 10px;
+}
+
+.btn-publish {
+  width: 100%;
+  margin-top: 15px;
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(45deg, #0d6efd, #0dcaf0);
+  color: white;
+  font-weight: bold;
+  transition: 0.2s;
+}
+
+.btn-publish:hover {
+  transform: scale(1.03);
+}
+
+.back-btn {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #0d6efd;
+  color: white;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  text-decoration: none;
+  font-size: 20px;
+}

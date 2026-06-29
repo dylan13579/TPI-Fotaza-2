@@ -2,144 +2,91 @@ extends layout
 
 block content
 
-  .card.shadow.mb-4
+  - const promedio = estadisticas && estadisticas.promedio ? parseFloat(estadisticas.promedio) : 0
+  - const promedioRedondeado = Math.round(promedio)
+  - const cantidad = estadisticas && estadisticas.cantidad ? estadisticas.cantidad : 0
 
-    if publicacion.imagen
-      img.card-img-top(
-        src=publicacion.imagen
-        style='max-height:500px; object-fit:cover;'
-      )
+  - const estrellas = estadisticas && estadisticas.estrellas ? estadisticas.estrellas : {5:0,4:0,3:0,2:0,1:0}
 
-    .card-body
-      h1= publicacion.titulo
-      p= publicacion.descripcion
+  .insta-container
 
-      small.text-muted
-        | Autor: #{publicacion.username}
+    .left
+      if publicacion.imagen && publicacion.imagen.length > 50
+        img(
+          src=publicacion.imagen.startsWith('data:')
+            ? publicacion.imagen
+            : `data:image/jpeg;base64,${publicacion.imagen}`
+        )
+      else
+        img(src='/img/no-image.png')
 
-      // Valoraciones
+    .right
+
+      .top
+        i.bi.bi-person-circle.avatar
+        span.username= publicacion.username
+
+      .contenido
+        strong= publicacion.titulo
+        p= publicacion.descripcion
 
       hr
 
-      h5 Valoración
+      .reviews-box
 
-      - const promedio = estadisticas && estadisticas.promedio ? parseFloat(estadisticas.promedio) : 0
-      - const promedioRedondeado = Math.round(promedio)
+        .reviews-header
+          span.score #{promedio.toFixed(1)}
 
-      p
-        strong Promedio:
-        |  #{promedio.toFixed(1)}
+          .mini-stars
+            each i in [1,2,3,4,5]
+              if i <= promedioRedondeado
+                span ★
+              else
+                span ☆
 
-      .estrellas.mb-2
-        each i in [1,2,3,4,5]
-          if i <= promedioRedondeado
-            span.text-warning(style='font-size:26px;') ★
-          else
-            span.text-secondary(style='font-size:26px;') ☆
+          small #{cantidad} opiniones
 
-      p
-        strong Cantidad votos:
-        |  #{estadisticas && estadisticas.cantidad ? estadisticas.cantidad : 0}
+        .bars
+          each val in [5,4,3,2,1]
+            - const count = estrellas[val] || 0
+            - const percent = cantidad ? (count * 100 / cantidad) : 0
+
+            .bar-row
+              span.label #{val}
+
+              .bar
+                .fill(style=`width:${percent}%`)
 
       if usuario && !esAutor
-        form(action='/valoraciones/votar' method='POST')
+        form.vote-form(action='/valoraciones/votar' method='POST')
+          input(type='hidden' name='id_publicacion' value=publicacion.id)
 
-          input(
-            type='hidden'
-            name='id_publicacion'
-            value=publicacion.id
-          )
+          .rating-input
+            each i in [5,4,3,2,1]
+              input(type='radio' id=`star${i}` name='puntuacion' value=i required)
+              label(for=`star${i}`) ★
 
-          .mb-3
-            label.form-label Puntuación
+          button.btn.btn-primary.btn-sm.mt-2 Votar
 
-            .estrellas-hover
-              each i in [5,4,3,2,1]
-                input(
-                  type='radio'
-                  id=`star${i}`
-                  name='puntuacion'
-                  value=i
-                  required
-                )
-                label(for=`star${i}`) ★
+      hr
 
-          button.btn.btn-primary.mt-2(type='submit')
-            | Votar
+      .comments
+        each c in comentarios
+          .comment
 
-  // Comentarios
+            .comment-left
+              strong= c.username
+              span.text= c.texto
 
-  h3.mb-3 Comentarios
+            if usuario && usuario.id === c.id_usuario
+              button.delete(
+                onclick=`eliminarComentario(${c.id}, this)`
+              ) ✕
 
-  each c in comentarios
-    .card.mb-2
-      .card-body
+      if usuario
+        form.comment-form(action='/comentarios/crear' method='POST')
+          input(type='hidden' name='id_publicacion' value=publicacion.id)
+          textarea(name='contenido' placeholder='Comentar...' required)
 
-        strong= c.username
-        p.mb-0= c.texto
 
-        if usuario && usuario.id === c.id_usuario
-          button.btn.btn-danger.btn-sm(
-            onclick=`eliminarComentario(${c.id}, this)`
-            style='margin-top:10px;'
-          ) Eliminar
-
-  if usuario
-    .card.mt-4
-      .card-body
-
-        form(
-          action='/comentarios/crear'
-          method='POST'
-        )
-
-          input(
-            type='hidden'
-            name='id_publicacion'
-            value=publicacion.id
-          )
-
-          .mb-3
-            textarea.form-control(
-              name='contenido'
-              placeholder='Escribí un comentario'
-              required
-            )
-
-          button.btn.btn-primary(type='submit')
-            | Comentar
-
-  // Botón volver
-
-  a.btn.btn-primary.rounded-circle(
-    href='/'
-    style='position:fixed; bottom:20px; right:20px; width:50px; height:50px; display:flex; align-items:center; justify-content:center;'
-  )
-    i.bi.bi-arrow-left
-
-  script.
-    async function eliminarComentario(id, btn) {
-      if (!confirm('¿Eliminar comentario?')) return;
-
-      try {
-        const res = await fetch(`/comentarios/eliminar/${id}`, {
-          method: 'POST',
-          credentials: 'same-origin'
-        });
-
-        const data = await res.json();
-
-        if (data.ok) {
-          const card = btn.closest('.card');
-          card.style.transition = '0.3s';
-          card.style.opacity = '0';
-          setTimeout(() => card.remove(), 300);
-        } else {
-          alert('Error al eliminar');
-        }
-
-      } catch (error) {
-        console.error(error);
-        alert('Error de conexión');
-      }
-    }
+  script(src="/js/detalle-publicacion.js")

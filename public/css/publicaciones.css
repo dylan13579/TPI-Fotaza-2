@@ -1,0 +1,106 @@
+.feed-container {
+  padding: 20px;
+}
+
+.post-card {
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+  transition: 0.2s;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.post-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 30px rgba(0,0,0,0.15);
+}
+
+.post-image {
+  width: 100%;
+  height: 220px;
+  overflow: hidden;
+}
+
+.post-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: 0.3s;
+}
+
+.post-card:hover .post-image img {
+  transform: scale(1.05);
+}
+
+.post-body {
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.post-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  font-size: 14px;
+  color: #444;
+  margin-bottom: 6px;
+}
+
+.post-title {
+  font-size: 16px;
+  margin: 5px 0;
+}
+
+.post-text {
+  font-size: 13px;
+  color: #666;
+  flex-grow: 1;
+}
+
+.post-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 10px;
+}
+
+.btn-view,
+.btn-follow,
+.btn-unfollow {
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  transition: 0.2s;
+}
+
+.btn-view {
+  background: #0d6efd;
+  color: white;
+}
+
+.btn-follow {
+  background: #198754;
+  color: white;
+}
+
+.btn-unfollow {
+  background: #dc3545;
+  color: white;
+}
+
+.btn-view:hover,
+.btn-follow:hover,
+.btn-unfollow:hover {
+  transform: scale(1.05);
+  filter: brightness(1.1);
+}

@@ -67,3 +67,38 @@ CREATE TABLE seguimiento (
 
     UNIQUE (seguidor_id, seguido_id)
 );
+
+CREATE TABLE imagen (
+
+    id INT AUTO_INCREMENT PRIMARY KEY,
+
+    id_publicacion INT NOT NULL,
+
+    url LONGTEXT NOT NULL,
+
+    licencia ENUM('copyright','libre') DEFAULT 'copyright',
+
+    marca_agua VARCHAR(100),
+
+    FOREIGN KEY (id_publicacion)
+        REFERENCES publicacion(id)
+        ON DELETE CASCADE
+);
+
+CREATE TABLE notificacion (
+
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    id_usuario INT NOT NULL,              
+    tipo_evento VARCHAR(100) NOT NULL,    
+    id_usuario_origen INT,                
+    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    leida TINYINT(1) DEFAULT 0,
+
+    FOREIGN KEY (id_usuario)
+        REFERENCES usuario(id)
+        ON DELETE CASCADE,
+
+    FOREIGN KEY (id_usuario_origen)
+        REFERENCES usuario(id)
+        ON DELETE CASCADE
+);
