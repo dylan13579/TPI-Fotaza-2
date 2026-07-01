@@ -1,0 +1,39 @@
+.page-login {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #f5f7fa, #e4ecf3);
+}
+
+/* CARD */
+.card {
+  border: none;
+  border-radius: 18px;
+  box-shadow: 0 12px 35px rgba(0,0,0,0.12);
+}
+
+/* TITULO */
+h2 {
+  text-align: center;
+  font-weight: 700;
+  color: #333;
+}
+
+/* INPUTS */
+.form-control {
+  border-radius: 12px;
+  padding: 12px;
+}
+
+/* BOTON LOGIN */
+.btn-primary {
+  background: linear-gradient(135deg, #6c63ff, #5a54e6);
+  border: none;
+  border-radius: 12px;
+}
+
+/* BOTON REGISTRO */
+.btn-outline-secondary {
+  border-radius: 12px;
+}

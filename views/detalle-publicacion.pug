@@ -1,5 +1,8 @@
 extends layout
 
+block styles
+  link(rel='stylesheet', href='/css/detalle-publicacion.css')
+
 block content
 
   - const promedio = estadisticas && estadisticas.promedio ? parseFloat(estadisticas.promedio) : 0
@@ -45,17 +48,6 @@ block content
                 span ☆
 
           small #{cantidad} opiniones
-
-        .bars
-          each val in [5,4,3,2,1]
-            - const count = estrellas[val] || 0
-            - const percent = cantidad ? (count * 100 / cantidad) : 0
-
-            .bar-row
-              span.label #{val}
-
-              .bar
-                .fill(style=`width:${percent}%`)
 
       if usuario && !esAutor
         form.vote-form(action='/valoraciones/votar' method='POST')
