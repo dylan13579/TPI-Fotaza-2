@@ -45,6 +45,10 @@ html
             if notificacionesNoLeidas && notificacionesNoLeidas > 0
               span.badge.bg-danger= notificacionesNoLeidas
 
+          a.sidebar-item(href='/favoritos')
+            i.bi.bi-heart
+            span.texto Favoritos
+
           a.sidebar-item.logout(href='/auth/logout')
             i.bi.bi-box-arrow-right
             span.texto Salir

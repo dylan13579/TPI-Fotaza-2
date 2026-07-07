@@ -1,0 +1,99 @@
+body {
+  background-image: url('/img/fotaza.png');
+  background-size: 50%;
+  background-position: left;  
+  background-repeat: no-repeat;
+  min-height: 100vh;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  overflow-x: hidden;
+}
+
+.page-register {
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  justify-content: flex-end;
+  padding-right: 50px;
+}
+
+.register-box {
+  width: 100%;
+  max-width: 420px;
+  margin-top: -30px
+}
+
+.card {
+  border: none;
+  border-radius: 18px;
+  box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+  transition: 0.3s;
+  width: 100%;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+}
+
+.card-body {
+  padding: 25px;
+}
+
+h2 {
+  text-align: center;
+  font-weight: 700;
+  color: #2d2d2d;
+  margin-bottom: 20px;
+}
+
+.form-control {
+  border-radius: 12px;
+  padding: 12px;
+  border: 1px solid #ddd;
+  transition: all 0.25s ease;
+  font-size: 14px;
+}
+
+.form-control:focus {
+  border-color: #6c63ff;
+  box-shadow: 0 0 0 3px rgba(108,99,255,0.15);
+}
+
+select.form-control {
+  cursor: pointer;
+}
+
+.btn-success {
+  background: linear-gradient(135deg, #28c76f, #20a85a);
+  border: none;
+  border-radius: 12px;
+  font-weight: 600;
+  padding: 12px;
+  transition: all 0.25s ease;
+}
+
+.btn-success:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(40,199,111,0.35);
+}
+
+.invalid-feedback {
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+
+@media (max-height: 700px) {
+  .page-register {
+    align-items: flex-start;
+    padding-top: 30px;
+  }
+}

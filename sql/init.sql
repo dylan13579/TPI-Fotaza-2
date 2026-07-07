@@ -102,3 +102,20 @@ CREATE TABLE notificacion (
         REFERENCES usuario(id)
         ON DELETE CASCADE
 );
+
+CREATE TABLE favorito (
+
+    id_usuario INT NOT NULL,
+    id_publicacion INT NOT NULL,
+    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    PRIMARY KEY (id_usuario, id_publicacion),
+
+    FOREIGN KEY (id_usuario)
+        REFERENCES usuario(id)
+        ON DELETE CASCADE,
+
+    FOREIGN KEY (id_publicacion)
+        REFERENCES publicacion(id)
+        ON DELETE CASCADE
+);

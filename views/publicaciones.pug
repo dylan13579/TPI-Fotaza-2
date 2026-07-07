@@ -4,12 +4,10 @@ block styles
   link(rel='stylesheet', href='/css/publicaciones.css')
 
 block content
-
   .feed-container
     .row#contenedor-publicaciones
 
       each p in publicaciones
-
         .col-md-4.col-sm-6.mb-4
 
           .post-card
@@ -35,22 +33,30 @@ block content
 
               .post-actions
 
-                a.btn.btn-view(
-                  href=`/publicaciones/${p.id}`
-                )
+                a.btn.btn-view(href=`/publicaciones/${p.id}`)
                   i.bi.bi-eye
-                  | Ver
+                  |  Ver
 
                 if usuario && usuario.id !== p.id_usuario
 
-                  a.btn.btn-follow(
-                    href=`/seguimientos/seguir/${p.id_usuario}`
+                  form(
+                    action=p.siguiendo 
+                      ? `/seguimientos/dejar/${p.id_usuario}` 
+                      : `/seguimientos/seguir/${p.id_usuario}`
+                    method="POST"
                   )
-                    i.bi.bi-person-plus
-                    | Seguir
+                    button.btn-seguir(
+                      type="submit"
+                      class=p.siguiendo ? 'siguiendo' : ''
+                    )
+                      i(class=p.siguiendo ? 'bi bi-person-check' : 'bi bi-person-plus')
+                      span.siguiendo-text= p.siguiendo ? 'Siguiendo' : 'Seguir'
+                      span.dejar-text Dejar de seguir
 
-                  a.btn.btn-unfollow(
-                    href=`/seguimientos/dejar/${p.id_usuario}`
-                  )
-                    i.bi.bi-person-dash
-                    | Dejar
+                  form(action=`/favoritos/agregar/${p.id}` method="POST")
+                    button(
+                      type="submit"
+                      class=`btn-fav ${p.esFavorito ? 'active' : ''}`
+                    )
+                      i.bi.bi-heart
+                      |  Favorito

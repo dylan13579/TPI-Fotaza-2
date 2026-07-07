@@ -98,6 +98,79 @@
   color: white;
 }
 
+.btn-fav {
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: none;
+  background: #6c757d;
+  color: white;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn-fav i {
+  color: white;
+  transition: 0.2s;
+}
+
+.btn-fav:hover {
+  transform: scale(1.05);
+}
+
+.btn-fav.active {
+  background: #dc3545;
+  color: white;
+}
+
+.btn-fav.active i {
+  color: white;
+}
+
+.btn-seguir {
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: 8px;
+  border: none;
+  background: #198754;
+  color: white;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn-seguir.siguiendo {
+  background: #e4e6eb;
+  color: #000;
+}
+
+.btn-seguir.siguiendo:hover {
+  background: #dc3545;
+  color: white;
+}
+
+.btn-seguir:hover {
+  transform: scale(1.05);
+  filter: brightness(1.1);
+}
+
+.btn-seguir .dejar-text {
+  display: none;
+}
+
+.btn-seguir.siguiendo:hover .siguiendo-text {
+  display: none;
+}
+
+.btn-seguir.siguiendo:hover .dejar-text {
+  display: inline;
+}
+
 .btn-view:hover,
 .btn-follow:hover,
 .btn-unfollow:hover {

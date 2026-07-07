@@ -54,9 +54,22 @@ async function cantidadSeguidos(idUsuario) {
     return rows[0].total;
 }
 
+async function obtenerSeguidosIds(idUsuario) {
+
+    const [rows] = await db.query(`
+        SELECT seguido_id 
+        FROM seguimiento
+        WHERE seguidor_id = ?
+    `, [idUsuario]);
+
+    return rows.map(r => r.seguido_id);
+}
+
+
 module.exports = {
     seguir,
     dejarDeSeguir,
     cantidadSeguidores,
-    cantidadSeguidos
+    cantidadSeguidos,
+    obtenerSeguidosIds
 };

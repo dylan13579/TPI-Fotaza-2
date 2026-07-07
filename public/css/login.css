@@ -1,39 +1,49 @@
+body {
+  background-image: url('/img/fotaza.png');
+  background-size: 50%;
+  background-position: left;  
+  background-repeat: no-repeat;
+  min-height: 100vh;
+}
+
 .page-login {
   min-height: 100vh;
   display: flex;
   align-items: center;
-  justify-content: center;
-  background: linear-gradient(135deg, #f5f7fa, #e4ecf3);
+  justify-content: flex-end;
+  padding-right: 100px;
+  align-items: flex-end;
+  padding-bottom: 200px;
 }
 
-/* CARD */
 .card {
   border: none;
   border-radius: 18px;
   box-shadow: 0 12px 35px rgba(0,0,0,0.12);
 }
 
-/* TITULO */
 h2 {
   text-align: center;
   font-weight: 700;
   color: #333;
 }
 
-/* INPUTS */
 .form-control {
   border-radius: 12px;
   padding: 12px;
 }
 
-/* BOTON LOGIN */
 .btn-primary {
   background: linear-gradient(135deg, #6c63ff, #5a54e6);
   border: none;
   border-radius: 12px;
 }
 
-/* BOTON REGISTRO */
 .btn-outline-secondary {
   border-radius: 12px;
+}
+
+.login-box {
+  width: 100%;
+  max-width: 400px;
 }

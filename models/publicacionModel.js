@@ -104,10 +104,36 @@ async function buscar(texto) {
     return rows;
 }
 
+async function obtenerTodasConFavoritos(idUsuario) {
+
+    const sql = `
+        SELECT 
+            p.*,
+            u.username,
+            u.nombre,
+            u.apellido,
+            i.url AS imagen,
+            IF(f.id_usuario IS NULL, 0, 1) AS esFavorito
+        FROM publicacion p
+        INNER JOIN usuario u
+            ON p.id_usuario = u.id
+        LEFT JOIN imagen i
+            ON i.id_publicacion = p.id
+        LEFT JOIN favorito f
+            ON f.id_publicacion = p.id
+            AND f.id_usuario = ?
+        ORDER BY p.fecha DESC
+    `;
+
+    const [rows] = await db.query(sql, [idUsuario]);
+    return rows;
+}
+
 module.exports = {
     crear,
     guardarImagen,
     obtenerTodas,
     obtenerPorId,
-    buscar
+    buscar,
+    obtenerTodasConFavoritos
 };

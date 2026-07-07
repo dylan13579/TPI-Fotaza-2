@@ -46,7 +46,31 @@ async function dejarDeSeguir(req, res) {
     }
 }
 
+async function listar(req, res) {
+
+    const idUsuario = req.session.usuario?.id;
+
+    const publicaciones = await publicacionModel.obtenerTodasConFavoritos(idUsuario);
+
+    let siguiendoIds = [];
+
+    if (idUsuario) {
+        siguiendoIds = await seguimientoModel.obtenerSeguidosIds(idUsuario);
+    }
+
+    const publicacionesFinal = publicaciones.map(p => ({
+        ...p,
+        siguiendo: siguiendoIds.includes(p.id_usuario)
+    }));
+
+    res.render('publicaciones', {
+        publicaciones: publicacionesFinal,
+        usuario: req.session.usuario
+    });
+}
+
 module.exports = {
     seguir,
-    dejarDeSeguir
+    dejarDeSeguir,
+    listar
 };

@@ -3,13 +3,13 @@ const router = require('express').Router();
 const authMiddleware = require('../middlewares/authMiddleware');
 const seguimientoController = require('../controllers/seguimientoController');
 
-router.get(
+router.post(
   '/seguir/:id',
   authMiddleware,
   seguimientoController.seguir
 );
 
-router.get(
+router.post(
   '/dejar/:id',
   authMiddleware,
   seguimientoController.dejarDeSeguir

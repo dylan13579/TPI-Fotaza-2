@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   textarea.addEventListener('input', function () {
-    this.style.height = '40px'; // reset
+    this.style.height = '40px';
     this.style.height = Math.min(this.scrollHeight, 120) + 'px';
   });
 });

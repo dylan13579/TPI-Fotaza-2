@@ -5,10 +5,23 @@ const seguimientoModel = require('../models/seguimientoModel');
 
 async function listar(req, res) {
 
-    const publicaciones = await publicacionModel.obtenerTodas();
+    const idUsuario = req.session.usuario?.id;
+
+    const publicaciones = await publicacionModel.obtenerTodasConFavoritos(idUsuario);
+
+    let siguiendoIds = [];
+
+    if (idUsuario) {
+        siguiendoIds = await seguimientoModel.obtenerSeguidosIds(idUsuario);
+    }
+
+    const publicacionesFinal = publicaciones.map(p => ({
+        ...p,
+        siguiendo: siguiendoIds.map(Number).includes(Number(p.id_usuario))
+    }));
 
     res.render('publicaciones', {
-        publicaciones,
+        publicaciones: publicacionesFinal,
         usuario: req.session.usuario
     });
 }
