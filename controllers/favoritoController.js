@@ -11,7 +11,9 @@ async function agregar(req, res) {
 
     } catch (error) {
         console.log(error);
-        res.send('Ya está en favoritos');
+
+        req.session.toast = 'Ya está en favoritos';
+        res.redirect('/publicaciones');
     }
 }
 

@@ -16,7 +16,7 @@ html
       .sidebar.text-white
 
         .sidebar-header
-          .logo F
+          .logo Fotaza
 
         .search-box.mb-3
           i.bi.bi-search
@@ -89,3 +89,17 @@ html
           if (nuevas) contenedor.innerHTML = nuevas.innerHTML;
         }, 300);
       }
+
+    script.
+      document.addEventListener('submit', function () {
+        sessionStorage.setItem('scrollY', window.scrollY);
+      });
+
+      window.addEventListener('load', function () {
+        const y = sessionStorage.getItem('scrollY');
+
+        if (y !== null) {
+          window.scrollTo(0, parseInt(y));
+          sessionStorage.removeItem('scrollY');
+        }
+      });

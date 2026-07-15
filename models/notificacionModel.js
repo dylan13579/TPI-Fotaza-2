@@ -33,19 +33,36 @@ async function listar(idUsuario) {
 }
 
 
-async function marcarLeida(id) {
+async function marcarTodasLeidas(idUsuario) {
 
     const sql = `
         UPDATE notificacion
         SET leida = 1
-        WHERE id = ?
+        WHERE id_usuario = ?
+        AND leida = 0
     `;
 
-    return db.query(sql, [id]);
+    return db.query(sql, [idUsuario]);
 }
+
+async function contarNoLeidas(idUsuario) {
+
+    const sql = `
+        SELECT COUNT(*) AS total
+        FROM notificacion
+        WHERE id_usuario = ?
+        AND leida = 0
+    `;
+
+    const [rows] = await db.query(sql, [idUsuario]);
+
+    return rows[0].total;
+}
+
 
 module.exports = {
     crear,
     listar,
-    marcarLeida
+    marcarTodasLeidas,
+    contarNoLeidas
 };

@@ -3,9 +3,14 @@ const notificacionModel = require('../models/notificacionModel');
 async function ver(req, res) {
 
     try {
-        const notificaciones = await notificacionModel.listar(
-            req.session.usuario.id
-        );
+
+        const idUsuario = req.session.usuario.id;
+
+        await notificacionModel.marcarTodasLeidas(idUsuario);
+
+        res.locals.notificacionesNoLeidas = 0;
+
+        const notificaciones = await notificacionModel.listar(idUsuario);
 
         res.render('notificaciones', {
             notificaciones
@@ -18,20 +23,6 @@ async function ver(req, res) {
 }
 
 
-async function leer(req, res) {
-
-    try {
-        await notificacionModel.marcarLeida(req.params.id);
-
-        res.redirect('/notificaciones');
-
-    } catch (error) {
-        console.error(error);
-        res.send('Error al marcar como leída');
-    }
-}
-
 module.exports = {
-    ver,
-    leer
+    ver
 };

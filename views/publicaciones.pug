@@ -35,13 +35,13 @@ block content
 
                 a.btn.btn-view(href=`/publicaciones/${p.id}`)
                   i.bi.bi-eye
-                  |  Ver
+                  | Ver
 
                 if usuario && usuario.id !== p.id_usuario
 
                   form(
-                    action=p.siguiendo 
-                      ? `/seguimientos/dejar/${p.id_usuario}` 
+                    action=p.siguiendo
+                      ? `/seguimientos/dejar/${p.id_usuario}`
                       : `/seguimientos/seguir/${p.id_usuario}`
                     method="POST"
                   )
@@ -59,4 +59,17 @@ block content
                       class=`btn-fav ${p.esFavorito ? 'active' : ''}`
                     )
                       i.bi.bi-heart
-                      |  Favorito
+                      | Favorito
+
+  if toast
+    .toast-container.position-fixed.top-0.end-0.p-3
+      #toastFavorito.alert.alert-warning.shadow
+        = toast
+
+    script.
+      setTimeout(function () {
+        var toast = document.getElementById('toastFavorito');
+        if (toast) {
+          toast.remove();
+        }
+      }, 3000);

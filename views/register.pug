@@ -10,87 +10,97 @@ block content
       .card
         .card-body
 
-          h2.mb-4 Registro
+          h2.mb-4 Registrarse
 
           if errores && errores.general
             .alert.alert-danger= errores.general
 
           form(method='POST' novalidate)
 
-            .mb-3
-              input.form-control(
-                class=errores && errores.nombre ? 'is-invalid' : ''
-                type='text'
-                name='nombre'
-                placeholder='Nombre'
-                value=datos ? datos.nombre : ''
-              )
-              if errores && errores.nombre
-                .invalid-feedback= errores.nombre
+            .row
 
-            .mb-3
-              input.form-control(
-                class=errores && errores.apellido ? 'is-invalid' : ''
-                type='text'
-                name='apellido'
-                placeholder='Apellido'
-                value=datos ? datos.apellido : ''
-              )
-              if errores && errores.apellido
-                .invalid-feedback= errores.apellido
+              .col-md-6.mb-3
+                input.form-control(
+                  class=errores && errores.nombre ? 'is-invalid' : ''
+                  type='text'
+                  name='nombre'
+                  placeholder='Nombre'
+                  value=datos ? datos.nombre : ''
+                )
+                if errores && errores.nombre
+                  .invalid-feedback= errores.nombre
 
-            .mb-3
-              input.form-control(
-                class=errores && errores.username ? 'is-invalid' : ''
-                type='text'
-                name='username'
-                placeholder='Usuario'
-                value=datos ? datos.username : ''
-              )
-              if errores && errores.username
-                .invalid-feedback= errores.username
 
-            .mb-3
-              input.form-control(
-                class=errores && errores.email ? 'is-invalid' : ''
-                type='email'
-                name='email'
-                placeholder='Email'
-                value=datos ? datos.email : ''
-              )
-              if errores && errores.email
-                .invalid-feedback= errores.email
+              .col-md-6.mb-3
+                input.form-control(
+                  class=errores && errores.apellido ? 'is-invalid' : ''
+                  type='text'
+                  name='apellido'
+                  placeholder='Apellido'
+                  value=datos ? datos.apellido : ''
+                )
+                if errores && errores.apellido
+                  .invalid-feedback= errores.apellido
 
-            .mb-3
-              input.form-control(
-                class=errores && errores.password ? 'is-invalid' : ''
-                type='password'
-                name='password'
-                placeholder='Contraseña'
-              )
-              if errores && errores.password
-                .invalid-feedback= errores.password
 
-            .mb-3
-              select.form-control(
-                class=errores && errores.sexo ? 'is-invalid' : ''
-                name='sexo'
-              )
-                option(value='') Selecciona sexo
-                option(value='M' selected=datos && datos.sexo === 'M') Masculino
-                option(value='F' selected=datos && datos.sexo === 'F') Femenino
-              if errores && errores.sexo
-                .invalid-feedback= errores.sexo
+              .col-md-6.mb-3
+                input.form-control(
+                  class=errores && errores.username ? 'is-invalid' : ''
+                  type='text'
+                  name='username'
+                  placeholder='Usuario'
+                  value=datos ? datos.username : ''
+                )
+                if errores && errores.username
+                  .invalid-feedback= errores.username
 
-            .mb-3
-              input.form-control(
-                class=errores && errores.fecha_nacimiento ? 'is-invalid' : ''
-                type='date'
-                name='fecha_nacimiento'
-                value=datos ? datos.fecha_nacimiento : ''
-              )
-              if errores && errores.fecha_nacimiento
-                .invalid-feedback= errores.fecha_nacimiento
+
+              .col-md-6.mb-3
+                input.form-control(
+                  class=errores && errores.email ? 'is-invalid' : ''
+                  type='email'
+                  name='email'
+                  placeholder='Email'
+                  value=datos ? datos.email : ''
+                )
+                if errores && errores.email
+                  .invalid-feedback= errores.email
+
+
+              .col-md-6.mb-3
+                input.form-control(
+                  class=errores && errores.password ? 'is-invalid' : ''
+                  type='password'
+                  name='password'
+                  placeholder='Contraseña'
+                )
+                if errores && errores.password
+                  .invalid-feedback= errores.password
+
+
+              .col-md-6.mb-3
+                select.form-control(
+                  class=errores && errores.sexo ? 'is-invalid' : ''
+                  name='sexo'
+                )
+                  option(value='') Selecciona sexo
+                  option(value='M' selected=datos && datos.sexo === 'M') Masculino
+                  option(value='F' selected=datos && datos.sexo === 'F') Femenino
+
+                if errores && errores.sexo
+                  .invalid-feedback= errores.sexo
+
+
+              .col-md-12.mb-3
+                input.form-control(
+                  class=errores && errores.fecha_nacimiento ? 'is-invalid' : ''
+                  type='date'
+                  name='fecha_nacimiento'
+                  value=datos ? datos.fecha_nacimiento : ''
+                )
+
+                if errores && errores.fecha_nacimiento
+                  .invalid-feedback= errores.fecha_nacimiento
 
             button.btn.btn-success.w-100(type='submit')
               | Registrarse

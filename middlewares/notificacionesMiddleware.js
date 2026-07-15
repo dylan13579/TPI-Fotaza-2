@@ -6,11 +6,9 @@ async function notificacionesMiddleware(req, res, next) {
 
         if (req.session.usuario) {
 
-            const notificaciones = await notificacionModel.listar(
+            const noLeidas = await notificacionModel.contarNoLeidas(
                 req.session.usuario.id
             );
-
-            const noLeidas = notificaciones.filter(n => !n.leida).length;
 
             res.locals.notificacionesNoLeidas = noLeidas;
 

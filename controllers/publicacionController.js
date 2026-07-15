@@ -20,10 +20,14 @@ async function listar(req, res) {
         siguiendo: siguiendoIds.map(Number).includes(Number(p.id_usuario))
     }));
 
+    const toast = req.session.toast;
+    req.session.toast = null;
+
     res.render('publicaciones', {
         publicaciones: publicacionesFinal,
-        usuario: req.session.usuario
-    });
+        usuario: req.session.usuario,
+        toast
+});
 }
 
 function crearView(req, res) {
