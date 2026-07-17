@@ -37,6 +37,12 @@ h2 {
   background: linear-gradient(135deg, #6c63ff, #5a54e6);
   border: none;
   border-radius: 12px;
+  transition: all 0.3s ease;
+}
+
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(108, 99, 255, 0.35);
 }
 
 .btn-outline-secondary {

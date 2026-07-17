@@ -1,0 +1,58 @@
+extends layout
+
+block styles
+  link(rel='stylesheet', href='/css/publicaciones.css')
+
+block content
+  .feed-container
+
+    h3.mb-4 Mi colección
+
+    .row#contenedor-publicaciones
+
+      if publicaciones.length === 0
+
+        p.text-muted No hay publicaciones guardadas en esta colección.
+
+      else
+
+        each p in publicaciones
+
+          .col-md-4.col-sm-6.mb-4
+
+            .post-card
+
+              .post-image
+
+                if p.imagen && p.imagen.length > 50
+
+                  img(
+                    src=p.imagen.startsWith('data:')
+                      ? p.imagen
+                      : `data:image/jpeg;base64,${p.imagen}`
+                  )
+
+                else
+
+                  img(src='/img/no-image.png')
+
+
+              .post-body
+
+                .post-header
+                  i.bi.bi-person-circle
+                  span= p.username
+
+
+                h5.post-title= p.titulo
+
+                p.post-text= p.descripcion
+
+
+                .post-actions
+
+                  a.btn.btn-view(
+                    href=`/publicaciones/${p.id}`
+                  )
+                    i.bi.bi-eye
+                    |  Ver

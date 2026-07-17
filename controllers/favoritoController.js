@@ -1,4 +1,5 @@
 const favoritoModel = require('../models/favoritoModel');
+const coleccionModel = require('../models/coleccionModel');
 
 async function agregar(req, res) {
     try {
@@ -18,12 +19,15 @@ async function agregar(req, res) {
 }
 
 async function listar(req, res) {
-    const favoritos = await favoritoModel.listar(
-        req.session.usuario.id
-    );
+    const idUsuario = req.session.usuario.id;
+
+    const favoritos = await favoritoModel.listar(idUsuario);
+
+    const colecciones = await coleccionModel.obtenerPorUsuario(idUsuario);
 
     res.render('favoritos', {
-        favoritos
+        favoritos,
+        colecciones
     });
 }
 

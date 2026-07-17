@@ -119,3 +119,37 @@ CREATE TABLE favorito (
         REFERENCES publicacion(id)
         ON DELETE CASCADE
 );
+
+CREATE TABLE coleccion (
+
+    id INT AUTO_INCREMENT PRIMARY KEY,
+
+    id_usuario INT NOT NULL,
+
+    nombre VARCHAR(100) NOT NULL,
+
+    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+
+    FOREIGN KEY (id_usuario)
+        REFERENCES usuario(id)
+        ON DELETE CASCADE
+);
+
+
+CREATE TABLE coleccion_publicacion (
+
+    id_coleccion INT NOT NULL,
+
+    id_publicacion INT NOT NULL,
+
+    PRIMARY KEY (id_coleccion, id_publicacion),
+
+    FOREIGN KEY (id_coleccion)
+        REFERENCES coleccion(id)
+        ON DELETE CASCADE,
+
+    FOREIGN KEY (id_publicacion)
+        REFERENCES publicacion(id)
+        ON DELETE CASCADE
+
+);

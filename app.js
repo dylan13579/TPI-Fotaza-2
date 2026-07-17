@@ -21,10 +21,17 @@ app.use(session({
 }));
 
 app.use((req, res, next) => {
+
     res.locals.usuario = req.session.usuario || null;
+
     res.locals.ocultarSidebar = false;
+
+    res.locals.mensaje = req.session.mensaje || null;
+
+    delete req.session.mensaje;
+
     next();
-});;
+});
 
 const notificacionesMiddleware = require('./middlewares/notificacionesMiddleware');
 
@@ -43,6 +50,7 @@ app.use('/valoraciones', require('./routes/valoracionRoutes'));
 app.use('/seguimientos', require('./routes/seguimientoRoutes'));
 app.use('/notificaciones', require('./routes/notificacionRoutes'));
 app.use('/favoritos', require('./routes/favoritoRoutes'));
+app.use('/colecciones', require('./routes/coleccionRoutes'));
 
 
 app.listen(process.env.PORT, () => {

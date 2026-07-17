@@ -1,13 +1,56 @@
 extends layout
 
 block styles
-  link(rel='stylesheet', href='/css/publicaciones.css')
+  link(rel='stylesheet', href='/css/coleccion.css')
 
 block content
+
+  if mensaje
+    .alert.alert-info
+      = mensaje
+      
   .feed-container
+
+    form(
+      action="/colecciones/crear"
+      method="POST"
+      class="collection-create"
+    )
+      .input-group
+
+        input.form-control(
+          type="text"
+          name="nombre"
+          placeholder="Nombre de la colección"
+          required
+        )
+
+        button.btn-view(type="submit")
+          i.bi.bi-folder-plus
+          |  Crear colección
+
+
+    h4.mb-3 Colecciones creadas
+
+    if colecciones.length === 0
+      p.text-muted Todavía no creaste ninguna colección.
+
+    else
+      .collection-list.mb-4
+        each c in colecciones
+          .collection-item
+            a(
+              href=`/colecciones/${c.id}`
+              class="text-decoration-none"
+            )
+              i.bi.bi-folder-fill.me-2
+              = c.nombre
+
+
     .row#contenedor-publicaciones
 
       each p in favoritos
+
         .col-md-4.col-sm-6.mb-4
 
           .post-card
@@ -22,6 +65,7 @@ block content
               else
                 img(src='/img/no-image.png')
 
+
             .post-body
 
               .post-header
@@ -33,14 +77,43 @@ block content
 
               .post-actions
 
-                a.btn.btn-view(href=`/publicaciones/${p.id}`)
-                  i.bi.bi-eye
-                  |  Ver
+                .d-flex.gap-2.mb-2
 
-                form(action=`/favoritos/quitar/${p.id}` method="POST")
-                  button(
-                    type="submit"
-                    class="btn-fav active"
+                  a.btn-view(href=`/publicaciones/${p.id}`)
+                    i.bi.bi-eye
+                    |  Ver
+
+                  form(
+                    action=`/favoritos/quitar/${p.id}`
+                    method="POST"
                   )
-                    i.bi.bi-heart-fill
-                    |  Quitar
+                    button.btn-fav.active(type="submit")
+                      i.bi.bi-heart-fill
+                      |  Quitar
+
+
+                form(
+                  action="/colecciones/agregar"
+                  method="POST"
+                  class="mt-2"
+                )
+
+                  input(
+                    type="hidden"
+                    name="publicacion"
+                    value=p.id
+                  )
+
+                  select.collection-select(
+                    name="coleccion"
+                    required
+                  )
+                    option(value="") Seleccionar colección
+
+                    each c in colecciones
+                      option(value=c.id)= c.nombre
+
+
+                  button.btn-save-collection(type="submit")
+                    i.bi.bi-folder-plus
+                    |  Guardar en colección
