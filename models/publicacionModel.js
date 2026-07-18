@@ -17,6 +17,7 @@ async function crear(publicacion) {
     return result.insertId;
 }
 
+
 async function guardarImagen(id_publicacion, imagen) {
 
     const base64 = imagen.split(',')[1];
@@ -27,7 +28,32 @@ async function guardarImagen(id_publicacion, imagen) {
     `, [id_publicacion, base64]);
 }
 
+
 async function obtenerTodas() {
+
+    const sql = `
+        SELECT 
+            p.*,
+            u.username,
+            u.nombre,
+            u.apellido,
+            i.url AS imagen
+        FROM publicacion p
+        INNER JOIN usuario u
+            ON p.id_usuario = u.id
+        LEFT JOIN imagen i
+            ON i.id_publicacion = p.id
+        WHERE p.estado = 'activa'
+        ORDER BY p.fecha DESC
+    `;
+
+    const [rows] = await db.query(sql);
+
+    return rows;
+}
+
+
+async function obtenerTodasAdmin() {
 
     const sql = `
         SELECT 
@@ -45,10 +71,37 @@ async function obtenerTodas() {
     `;
 
     const [rows] = await db.query(sql);
+
     return rows;
 }
 
+
 async function obtenerPorId(id) {
+
+    const sql = `
+        SELECT 
+            p.*, 
+            u.username,
+            u.nombre,
+            u.apellido,
+            i.url AS imagen
+        FROM publicacion p
+        INNER JOIN usuario u
+            ON p.id_usuario = u.id
+        LEFT JOIN imagen i
+            ON i.id_publicacion = p.id
+        WHERE p.id = ?
+        AND p.estado = 'activa'
+    `;
+
+    const [rows] = await db.query(sql, [id]);
+
+    return rows[0];
+}
+
+
+// el admin pueda ver publicaciones bloqueadas
+async function obtenerPorIdAdmin(id) {
 
     const sql = `
         SELECT 
@@ -66,8 +119,10 @@ async function obtenerPorId(id) {
     `;
 
     const [rows] = await db.query(sql, [id]);
+
     return rows[0];
 }
+
 
 async function buscar(texto) {
 
@@ -83,7 +138,8 @@ async function buscar(texto) {
             ON p.id_usuario = u.id
         LEFT JOIN imagen i
             ON i.id_publicacion = p.id
-        WHERE (
+        WHERE p.estado = 'activa'
+        AND (
             p.titulo LIKE ?
             OR p.descripcion LIKE ?
             OR u.username LIKE ?
@@ -92,6 +148,7 @@ async function buscar(texto) {
         )
         ORDER BY p.fecha DESC
     `;
+
 
     const [rows] = await db.query(sql, [
         `%${texto}%`,
@@ -103,6 +160,7 @@ async function buscar(texto) {
 
     return rows;
 }
+
 
 async function obtenerTodasConFavoritos(idUsuario) {
 
@@ -122,18 +180,36 @@ async function obtenerTodasConFavoritos(idUsuario) {
         LEFT JOIN favorito f
             ON f.id_publicacion = p.id
             AND f.id_usuario = ?
+        WHERE p.estado = 'activa'
         ORDER BY p.fecha DESC
     `;
 
+
     const [rows] = await db.query(sql, [idUsuario]);
+
     return rows;
 }
+
+async function liberarPublicacion(id) {
+
+    const sql = `
+        UPDATE publicacion
+        SET estado = 'activa'
+        WHERE id = ?
+    `;
+
+    return db.query(sql, [id]);
+}
+
 
 module.exports = {
     crear,
     guardarImagen,
     obtenerTodas,
+    obtenerTodasAdmin,
     obtenerPorId,
+    obtenerPorIdAdmin,
     buscar,
-    obtenerTodasConFavoritos
+    obtenerTodasConFavoritos,
+    liberarPublicacion
 };

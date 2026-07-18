@@ -1,0 +1,49 @@
+body {
+  background-color: #f5f6fa;
+}
+
+.card {
+  border: none;
+  border-radius: 15px;
+  background: #fff;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+  transition: 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
+
+.botones {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.botones .btn {
+  padding: 5px 10px;
+  font-size: 13px;
+  border-radius: 6px;
+  width: auto;
+}
+
+.botones form {
+  margin: 0;
+}
+
+.btn-primary {
+  background-color: #4a69bd;
+  border: none;
+}
+
+.btn-success {
+  background-color: #38ada9;
+  border: none;
+}
+
+.btn-secondary {
+  background-color: #6c757d;
+  border: none;
+}

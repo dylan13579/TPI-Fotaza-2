@@ -7,7 +7,18 @@ async function listar(req, res) {
 
     const idUsuario = req.session.usuario?.id;
 
-    const publicaciones = await publicacionModel.obtenerTodasConFavoritos(idUsuario);
+    let publicaciones;
+
+    if (req.session.usuario && req.session.usuario.rol === 'admin') {
+
+        publicaciones = await publicacionModel.obtenerTodasAdmin();
+
+    } else {
+
+        publicaciones = await publicacionModel.obtenerTodasConFavoritos(idUsuario);
+
+    }
+
 
     let siguiendoIds = [];
 
@@ -15,19 +26,22 @@ async function listar(req, res) {
         siguiendoIds = await seguimientoModel.obtenerSeguidosIds(idUsuario);
     }
 
+
     const publicacionesFinal = publicaciones.map(p => ({
         ...p,
         siguiendo: siguiendoIds.map(Number).includes(Number(p.id_usuario))
     }));
 
+
     const toast = req.session.toast;
     req.session.toast = null;
+
 
     res.render('publicaciones', {
         publicaciones: publicacionesFinal,
         usuario: req.session.usuario,
         toast
-});
+    });
 }
 
 function crearView(req, res) {
@@ -64,27 +78,60 @@ async function detalle(req, res) {
 
         const id = req.params.id;
 
-        const publicacion = await publicacionModel.obtenerPorId(id);
+        const comentarioDenunciado = req.query.comentario;
+
+
+        let publicacion;
+
+        if (req.session.usuario && req.session.usuario.rol === 'admin') {
+
+            publicacion = await publicacionModel.obtenerPorIdAdmin(id);
+
+        } else {
+
+            publicacion = await publicacionModel.obtenerPorId(id);
+
+        }
+
+
+        if (!publicacion) {
+            return res.send('Publicación no encontrada');
+        }
+
 
         const comentarios = await comentarioModel.obtenerPorPublicacion(id);
 
         const estadisticas = await valoracionModel.obtenerEstadisticas(id);
 
+
         const esAutor =
             req.session.usuario &&
             publicacion.id_usuario === req.session.usuario.id;
 
+
         res.render('detalle-publicacion', {
+
             publicacion,
+
             comentarios,
+
             estadisticas,
+
             usuario: req.session.usuario,
-            esAutor
+
+            esAutor,
+
+            comentarioDenunciado
+
         });
 
+
     } catch (error) {
+
         console.log(error);
+
         res.send('Error detalle');
+
     }
 }
 

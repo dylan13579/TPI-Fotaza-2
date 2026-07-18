@@ -213,3 +213,51 @@ body {
     max-height: 400px;
   }
 }
+
+.comentario-denunciado {
+  border: 2px solid #ff0000;
+  background-color: #ffe5e5;
+  padding: 10px;
+  border-radius: 10px;
+  animation: resaltar 0.5s ease-in-out;
+}
+
+.comentario-denunciado .text {
+  color: #cc0000;
+  font-weight: bold;
+}
+
+@keyframes resaltar {
+  0% {
+    transform: scale(1.02);
+    background-color: #ffcccc;
+  }
+  100% {
+    transform: scale(1);
+    background-color: #ffe5e5;
+  }
+}
+
+.btn-menu {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #777;
+  font-size: 16px;
+}
+
+.btn-menu:hover {
+  color: #000;
+}
+
+.comment {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.comment-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}

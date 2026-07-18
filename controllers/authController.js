@@ -142,6 +142,10 @@ async function login(req, res) {
 
         req.session.usuario = usuario;
 
+        if (usuario.rol === 'admin') {
+            return res.redirect('/admin/denuncias');
+        }
+
         res.redirect('/publicaciones');
 
     } catch (error) {

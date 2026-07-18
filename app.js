@@ -24,7 +24,7 @@ app.use((req, res, next) => {
 
     res.locals.usuario = req.session.usuario || null;
 
-    res.locals.ocultarSidebar = false;
+    res.locals.ocultarSidebar = req.session.usuario?.rol === 'admin';
 
     res.locals.mensaje = req.session.mensaje || null;
 
@@ -44,6 +44,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/auth', require('./routes/authRoutes'));
+app.use('/admin', require('./routes/adminRoutes'));
 app.use('/publicaciones', require('./routes/publicacionRoutes'));
 app.use('/comentarios', require('./routes/comentarioRoutes'));
 app.use('/valoraciones', require('./routes/valoracionRoutes'));
@@ -51,6 +52,7 @@ app.use('/seguimientos', require('./routes/seguimientoRoutes'));
 app.use('/notificaciones', require('./routes/notificacionRoutes'));
 app.use('/favoritos', require('./routes/favoritoRoutes'));
 app.use('/colecciones', require('./routes/coleccionRoutes'));
+app.use('/denuncias', require('./routes/denunciaRoutes'));
 
 
 app.listen(process.env.PORT, () => {

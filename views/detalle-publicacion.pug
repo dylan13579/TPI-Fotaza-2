@@ -64,21 +64,66 @@ block content
 
       .comments
         each c in comentarios
-          .comment
+          .comment(
+            class=c.id == comentarioDenunciado ? 'comentario-denunciado' : ''
+          )
 
             .comment-left
               strong= c.username
               span.text= c.texto
 
-            if usuario && usuario.id === c.id_usuario
-              button.delete(
-                onclick=`eliminarComentario(${c.id}, this)`
-              ) ✕
+            .comment-actions
+
+              if usuario && usuario.id === c.id_usuario
+                button.delete(
+                  onclick=`eliminarComentario(${c.id}, this)`
+                ) ✕
+
+              if usuario && usuario.id !== c.id_usuario
+                button.btn-menu(
+                  type="button"
+                  data-bs-toggle="modal"
+                  data-bs-target=`#modalReporte-${c.id}`
+                )
+                  i.bi.bi-three-dots-vertical
+
+          if usuario && usuario.id !== c.id_usuario
+            .modal.fade(id=`modalReporte-${c.id}` tabindex="-1")
+              .modal-dialog
+                .modal-content
+
+                  .modal-header
+                    h5.modal-title Reportar comentario
+                    button.btn-close(type="button" data-bs-dismiss="modal")
+
+                  form(action="/denuncias/crear" method="POST")
+                    .modal-body
+
+                      input(type="hidden" name="tipo" value="comentario")
+                      input(type="hidden" name="id_referencia" value=c.id)
+
+                      label.form-label Motivo
+                      select(name="motivo" required class="form-select mb-2")
+                        option(value="") Seleccionar motivo
+                        option(value="Spam") Spam
+                        option(value="Contenido inapropiado") Inapropiado
+                        option(value="Derechos de autor") Copyright
+
+                      label.form-label Descripción
+                      textarea.form-control(
+                        name="descripcion"
+                        placeholder="Detalle (opcional)"
+                      )
+
+                    .modal-footer
+                      button.btn.btn-secondary(type="button" data-bs-dismiss="modal") Cancelar
+                      button.btn.btn-danger(type="submit")
+                        i.bi.bi-flag
+                        |  Reportar
 
       if usuario
         form.comment-form(action='/comentarios/crear' method='POST')
           input(type='hidden' name='id_publicacion' value=publicacion.id)
           textarea(name='contenido' placeholder='Comentar...' required)
-
 
   script(src="/js/detalle-publicacion.js")

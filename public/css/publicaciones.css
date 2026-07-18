@@ -177,3 +177,15 @@
   transform: scale(1.05);
   filter: brightness(1.1);
 }
+
+.btn-menu {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: #555;
+}
+
+.btn-menu:hover {
+  color: #000;
+}

@@ -1,0 +1,72 @@
+extends ../layout
+
+block styles
+  link(rel='stylesheet', href='/css/denuncia.css')
+
+block content
+  h2 Panel Administrador
+  h4 Denuncias recibidas
+
+  if denuncias.length === 0
+    p No hay denuncias pendientes.
+
+  else
+    each d in denuncias
+      .card.mb-3.p-3
+
+        - const fechaDenuncia = new Date(d.fecha)
+
+        p
+          strong Fecha:
+          |  #{fechaDenuncia.toLocaleDateString('es-AR')}
+
+        p
+          strong Hora:
+          |  #{fechaDenuncia.toLocaleTimeString('es-AR')}
+
+        p
+          strong Usuario:
+          |  #{d.username}
+
+        p
+          strong Tipo:
+          |  #{d.tipo}
+
+        p
+          strong ID Referencia:
+          |  #{d.id_referencia}
+
+        p
+          strong Motivo:
+          |  #{d.motivo}
+
+        p
+          strong Descripción:
+          |  #{d.descripcion}
+
+        if d.tipo === 'publicacion'
+          p
+            strong Publicación:
+            |  #{d.publicacion_titulo}
+
+          .botones
+            a.btn.btn-primary(href=`/publicaciones/${d.id_referencia}`)
+              i.bi.bi-eye
+              |  Ver
+
+            form(method='POST', action=`/admin/publicacion/${d.id_referencia}/liberar`)
+              button.btn.btn-success(type='submit')
+                i.bi.bi-check
+                |  Liberar
+
+        if d.tipo === 'comentario'
+          p
+            strong Comentario:
+            |  #{d.comentario_contenido}
+
+          .botones
+            a.btn.btn-secondary(
+              href=`/publicaciones/${d.comentario_publicacion_id}?comentario=${d.id_referencia}`
+            )
+              i.bi.bi-chat
+              |  Ver
